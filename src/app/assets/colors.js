@@ -1,0 +1,21 @@
+export const colors = {
+    "Amarelo1": "#feff00",
+    "Azul": "#88bcec",
+    "Amarelo2": "#f8c404",
+    "Preto": "#000000",
+    "Castanho Avermelhado": "#90240c",
+    "Verde": "#188434",
+    "Vermelho Claro": "#f0540c",
+    "Azul Escuro":"#1004d4",
+    "Azul Água":"#08a4d4",
+    "Castanho":"#600c14",
+    "Verde Claro":"#48cc3c",
+    "Dourado-Bege":"#d8d49c",
+    "Cinza":"#c8c4c4",
+    "Verde Escuro":"#082c0c",
+    "Azul-Preto":"#080c1c",
+    "Vermelho":"#d02414",
+    "Violeta":"#68147c",
+    "Branco":"#ffffff",
+    
+}

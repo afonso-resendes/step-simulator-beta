@@ -1,0 +1,537 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@200;500;800&display=swap");
+@media only screen and (max-width: 10000px) {
+  .editZoneText {
+    position: fixed;
+    overflow-y: hidden;
+    padding: 25px;
+    background-color: #fff;
+    top: 110px;
+    right: 50px;
+    transition: all 0.417s ease-in-out;
+    display: block;
+    opacity: 1;
+    box-shadow: 0 0 25px rgba(26, 26, 28, 0.025);
+    z-index: 10;
+    border-radius: 35px;
+    width: 311px;
+    height: auto;
+    max-height: 462px;
+  }
+
+  .editZoneText::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nameZone {
+    background-color: #eee;
+    width: 311.2px;
+    padding-left: 25px;
+    padding-right: 25px;
+    border-top-right-radius: 35px;
+    border-top-left-radius: 35px;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: -25px;
+    margin-left: -25px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    z-index: 2;
+  }
+
+  .fileUploadLabealAdd,
+  .fileUploadLabealBack {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    border-radius: 100px;
+    text-align: center;
+    line-height: 50px;
+    background-color: #ddd;
+    cursor: pointer;
+    color: #000;
+    font-size: 12px;
+    transition: all 0.2s ease-in-out;
+    border: 1px solid transparent;
+  }
+
+  .fileUploadLabealAdd {
+    background-color: #00bfff30;
+  }
+
+  .fileUploadLabealBack {
+    background-color: #edc64530;
+  }
+
+  .fileUploadLabealAdd:hover {
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.02);
+    background-color: #00bfff50;
+    scale: 1.161;
+  }
+
+  .fileUploadLabealBack:hover {
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.02);
+    background-color: #edc64550;
+    scale: 1.161;
+  }
+
+  .trititle {
+    color: #333;
+    font-family: "Inter";
+    letter-spacing: 0.3px;
+    font-size: 12px;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 0px;
+  }
+
+  .bottomWindowText {
+    margin-top: 75px;
+  }
+
+  .inputText {
+    border: 0;
+    border-bottom: 0.5px solid #ccc;
+    width: 102px;
+    justify-content: flex-end;
+    padding-bottom: 7px;
+    padding-top: 10px;
+    font-size: 14px;
+    color: #333;
+    font-family: "Inter";
+    letter-spacing: -0.8px;
+    resize: none;
+    -webkit-text-size-adjust: 100%; /* Prevent font scaling in WebKit browsers */
+    max-height: 200px;
+    min-height: 14px;
+    height: auto;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .inputText:focus {
+    font-size: 14px;
+    outline: none;
+    border: 0;
+    border-bottom: 1px dotted #4a90e2; /* Replacing focus indication */
+  }
+
+  .deleteButton {
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    transition: all 0.161s ease-in-out;
+    transform-origin: 70%;
+    transform: rotate(0deg);
+  }
+
+  .deleteButton:hover {
+    transform: rotate(16.1deg);
+    opacity: 0.8;
+  }
+
+  .textHeader {
+    display: block;
+  }
+
+  .fontFamily {
+    display: flex;
+    margin-top: 50px;
+    gap: 15px;
+  }
+
+  .inputSize {
+    width: 105px;
+    font-family: "Inter";
+    letter-spacing: -0.7px;
+    font-size: 14px;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 40px;
+    background-color: #f2f2f2;
+    border: 0;
+    padding-left: 10px;
+    padding: 7px;
+    border-radius: 100px;
+  }
+
+  .alinhamento_Tamanho {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .alignBtns {
+    display: flex;
+    justify-content: flex-start;
+    gap: 5px;
+  }
+
+  .alignBtn {
+    border: 0;
+    background-color: #f2f2f2;
+    width: 40px;
+    height: 38px;
+    border-radius: 15px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .alignBtn:hover {
+    cursor: pointer;
+  }
+
+  .alignBtnImage:hover {
+    scale: 1.16;
+    transition: all 0.3s cubic-bezier(0.1, 0.7, 0, 1);
+  }
+
+  .inputMain {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+
+  .noText {
+    margin-top: 60px;
+    align-self: center;
+    overflow-y: scroll;
+    height: 250px;
+    mask-image: linear-gradient(
+      to bottom,
+      transparent,
+      #000 10%,
+      #000 80%,
+      transparent
+    ); /* Máscara de imagem gradient */
+    mask-size: 100% 100%;
+  }
+
+  .noText::-webkit-scrollbar {
+    display: none;
+  }
+
+  .textOption {
+    border-bottom: 1px solid #e8e8e9;
+    padding: 5px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    justify-content: center;
+    text-align: center;
+    align-items: flex-end;
+    text-align: left;
+    border-radius: 0px;
+    font-size: 13px;
+    margin-bottom: 10px;
+    font-family: "Inter";
+    letter-spacing: -0.4px;
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+  }
+
+  .textOption:hover {
+    cursor: pointer;
+    opacity: 0.6;
+  }
+
+  .selectFonts {
+    width: 190px;
+    font-family: "Inter";
+    letter-spacing: -0.7px;
+    font-size: 14px;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 40px;
+    background-color: #f2f2f2;
+    border: 0;
+    padding-left: 10px;
+    padding: 5px;
+    border-radius: 100px;
+  }
+
+  .selectFonts::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  .selectFonts::-webkit-scrollbar-track {
+    width: 12px;
+    background: #f1f1f1;
+    border-radius: 10px;
+    border-left: 1px #000;
+  }
+
+  .selectFonts::-webkit-scrollbar-thumb {
+    background: #bbb;
+    border-radius: 10px;
+    border: 0px solid transparent;
+    background-clip: padding-box;
+    transition: all 0.8s ease-in-out;
+  }
+
+  .selectFonts::-webkit-scrollbar-thumb:active {
+    background: #ccc;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+
+  .priceBtn {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border-radius: 25px;
+    background-color: #00bfff;
+    color: #fff;
+    font-family: "Inter";
+    letter-spacing: -0.8px;
+    border: 0;
+    align-self: center;
+    text-align: center;
+    display: block;
+    margin: auto;
+    transition: all 0.2s ease-in-out;
+    font-size: 15px;
+  }
+
+  .priceBtn:hover {
+    cursor: pointer;
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+
+  .exportBtnNot button {
+    background-color: #fff;
+    border: 0px solid #bfbfbf;
+    z-index: 100;
+    position: fixed;
+    top: 50px;
+    right: 50px;
+    color: #000;
+    border-radius: 100px;
+    padding: 5px;
+    font-family: "Inter";
+    font-size: 14px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+  }
+
+  .exportBtnNot button:hover {
+    padding-left: 25px;
+    padding-right: 25px;
+    opacity: 0.8;
+  }
+
+  .priceBtnMain button {
+    background-color: #00bfff;
+    z-index: 100;
+    position: fixed;
+    top: 50px;
+    right: 50px;
+    color: #fff;
+    border-radius: 100px;
+    padding: 5px;
+    font-family: "Inter";
+    font-size: 14px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+  }
+
+  .modelsZone {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.2);
+    width: 100%;
+    height: 100vh;
+    bottom: 0px;
+    top: 0px;
+    z-index: 100;
+    align-self: center;
+    justify-content: center;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease-in-out;
+  }
+
+  .modelsList {
+    display: block;
+    margin: auto;
+    width: 50%;
+    border-radius: 25px;
+    justify-content: center;
+    margin-top: 20.1%;
+  }
+
+  .title {
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.6px;
+    font-family: "Inter";
+  }
+
+  .modelosBtns {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .modeloBtn {
+    border: 0px;
+    background-color: transparent;
+    transition: all 0.2s cubic-bezier(0.5, 0, 0, 1);
+  }
+
+  .modelosBtns.moving .modeloBtn {
+    filter: blur(2px);
+  }
+
+  .modelosImgs {
+    border-radius: 15px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .modelosImgs:hover {
+    scale: 1.161;
+    cursor: pointer;
+  }
+}
+
+@media only screen and (max-width: 715px) {
+  .noText {
+    margin-top: 60px;
+    overflow-y: auto;
+    /* height: 120px; */
+    height: auto;
+    mask-image: linear-gradient(
+      to bottom,
+      transparent,
+      #000 5%,
+      #000 65%,
+      transparent
+    ); /* Máscara de imagem gradient */
+    mask-size: 100% 100%;
+  }
+
+  .textOption {
+    border-bottom: 1px solid #e8e8e9;
+    padding: 5px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    justify-content: center;
+    text-align: center;
+    align-items: flex-end;
+    text-align: left;
+    border-radius: 0px;
+    font-size: 13px;
+    margin-bottom: 10px;
+    font-family: "Inter";
+    letter-spacing: -0.4px;
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-right: 25px;
+  }
+
+  .editZoneText {
+    position: fixed;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    padding: 25px;
+    background-color: #fff;
+    top: auto;
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
+    transition: all 0.417s ease-in-out;
+    display: block;
+    opacity: 1;
+    box-shadow: 0 0 25px rgba(26, 26, 28, 0.025);
+    z-index: 10;
+    border-radius: 35px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    width: auto;
+  }
+
+  .editZoneText {
+    /* max-height: 170px; */
+    padding-right: 0px;
+  }
+
+  .nameZone {
+    margin: auto;
+    width: 100%;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-top: -25px;
+    margin-left: -25px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    z-index: 2;
+  }
+
+  .fileUploadLabealBack {
+    margin-left: 25px;
+    margin-right: -25px;
+  }
+
+  .fileUploadLabealAdd {
+    margin-right: 25px;
+    margin-left: -25px;
+  }
+
+  .bottomWindowText {
+    margin-top: 55px;
+  }
+
+  .inputText {
+    border: 0;
+    border-bottom: 0.5px solid #ccc;
+    width: 50px;
+    padding-bottom: 7px;
+    padding-top: 10px;
+    font-size: 16px;
+    color: #333;
+    font-family: "Inter";
+    letter-spacing: -0.8px;
+    resize: none;
+  }
+
+  .deleteButton {
+    margin-right: 15px;
+  }
+
+  .textHeader {
+    display: flex;
+    overflow-x: auto;
+    gap: 135px;
+    margin-top: 5px;
+    padding-bottom: 10px;
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 1.5%,
+      #000 80%,
+      transparent
+    ); /* Máscara de imagem gradient */
+    mask-size: 100% 100%;
+  }
+
+  .fontFamily {
+    width: 190px;
+    margin-top: 0;
+  }
+
+  .inputMain {
+    margin-left: -25px;
+    margin-right: 25px;
+  }
+}

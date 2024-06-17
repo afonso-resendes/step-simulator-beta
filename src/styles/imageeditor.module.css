@@ -1,0 +1,373 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@200;500;800&display=swap");
+@media only screen and (max-width: 10000px) {
+  .editZoneImg::-webkit-scrollbar {
+    display: none;
+  }
+
+  .editZoneImg {
+    position: fixed;
+    overflow-y: hidden;
+    padding: 25px;
+    background-color: #fff;
+    top: 110px;
+    right: 50px;
+    transition: all 0.417s ease-in-out;
+    display: block;
+    opacity: 1;
+    box-shadow: 0 0 25px rgba(26, 26, 28, 0.025);
+    z-index: 10;
+    border-radius: 35px;
+    width: 311px;
+  }
+
+  .nameZone {
+    background-color: #eee;
+    width: 311.2px;
+    padding-left: 25px;
+    padding-right: 25px;
+    border-top-right-radius: 35px;
+    border-top-left-radius: 35px;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: -25px;
+    margin-left: -25px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    z-index: 2;
+  }
+
+  .fileUploadLabealBack {
+    display: inline-block;
+    width: 25px; /* ou qualquer tamanho que prefiras */
+    height: 25px; /* para torná-lo quadrado */
+    border-radius: 100px;
+    text-align: center;
+    line-height: 50px; /* para centralizar o '+' verticalmente */
+    background-color: #edc64530;
+    cursor: pointer;
+    color: #edc64530;
+    font-size: 12px;
+    transition: all 0.2s ease-in-out;
+    border: 1px solid transparent;
+  }
+
+  .fileUploadLabealBack:hover {
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.02);
+    background-color: #edc64550;
+    scale: 1.161;
+  }
+
+  .trititle {
+    color: #333;
+    font-family: "Inter";
+    letter-spacing: 0.3px;
+    font-size: 12px;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 0px;
+  }
+
+  .fileUploadLabealAdd:hover {
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.02);
+    background-color: #00bfff50;
+    scale: 1.161;
+  }
+
+  .fileUploadLabealAdd {
+    display: inline-block;
+    width: 25px; /* ou qualquer tamanho que prefiras */
+    height: 25px; /* para torná-lo quadrado */
+    border-radius: 100px;
+    text-align: center;
+    line-height: 50px; /* para centralizar o '+' verticalmente */
+    background-color: #00bfff30;
+    cursor: pointer;
+    color: #000;
+    font-size: 12px;
+    transition: all 0.2s ease-in-out;
+    border: 1px solid transparent;
+  }
+
+  .menuPicker {
+    margin-top: 65px;
+    justify-content: center;
+  }
+
+  .editImageMain {
+    display: block;
+  }
+
+  .editImageMainMobile {
+    display: none;
+  }
+
+  .divAreaEspecifica {
+    background-color: #fff;
+    border: 0;
+    border-bottom: 1px solid rgba(200, 200, 200, 0.15);
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .divAreaEspecifica:hover {
+    margin-left: 7px;
+  }
+
+  .divIcon {
+    padding: 9px;
+    border-radius: 100px;
+    background-color: #f9f9f9;
+    width: 23px;
+    height: 23px;
+  }
+
+  .titleText {
+    font-size: 12px;
+    font-family: "Inter";
+    font-weight: 800;
+    text-align: left;
+    margin-bottom: -10px;
+    letter-spacing: 0.2px;
+    text-transform: uppercase;
+  }
+
+  .infoText {
+    color: #333;
+    font-family: "Inter";
+    font-weight: 300;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    text-align: left;
+  }
+
+  .deleteButtonImage {
+    background-color: transparent;
+    border: 0;
+    position: absolute;
+    right: 25px;
+    bottom: 25px;
+    transition: all 0.161s ease-in-out;
+    cursor: pointer;
+    transform-origin: 70%;
+    transform: rotate(0deg);
+  }
+
+  .deleteButtonImage:hover {
+    transform: rotate(16.1deg);
+    opacity: 0.8;
+  }
+
+  .noText {
+    margin-top: 120px;
+  }
+
+  .imageContainer {
+    position: relative;
+    width: 93.7px;
+    height: 93.7px;
+    overflow: hidden;
+    border-radius: 12px;
+    flex: 0 0 auto;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    background-color: #f2f2f2;
+  }
+
+  .imageContainer:hover {
+    opacity: 0.7;
+  }
+
+  .hintText {
+    align-items: center;
+    gap: 10px;
+    background-color: #e8e8e9;
+    border-radius: 35px;
+    padding-left: 15px;
+    padding-right: 15px;
+    position: absolute;
+    margin-top: 10px;
+    margin-left: 10px;
+    box-shadow: 0 0 50px rgba(0, 191, 255, 0.15);
+    z-index: 0;
+    height: 30px;
+  }
+
+  .bottomWindow {
+    margin-top: 25px;
+  }
+
+  .fecharBtn {
+    border: 0;
+    position: fixed;
+    margin-top: 395px;
+    z-index: 1000;
+    padding: 12px 20px 12px 20px;
+    font-family: "Inter";
+    font-weight: 500;
+    font-size: 15px;
+    border-radius: 100px;
+    letter-spacing: -0.8px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px -10px 25px rgba(0, 0, 200, 0.02);
+    width: 315px;
+  }
+
+  .fecharBtn {
+    color: #000;
+    border: 1px solid #f2f2f2;
+    background-color: transparent;
+  }
+
+  .fecharBtn:hover {
+    cursor: pointer;
+    padding-left: 27px;
+    padding-right: 27px;
+  }
+  .imageList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 14px;
+    margin-bottom: -80px;
+    margin: 0px;
+    overflow-x: hidden;
+    height: 270px;
+    overflow-y: scroll;
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 3%,
+      #000 80%,
+      transparent
+    ); /* Máscara de imagem gradient */
+    mask-size: 100% 100%;
+  }
+  .imageList::-webkit-scrollbar,
+  .canvasScroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .canvasScroll {
+    justify-content: center;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+    margin-bottom: 55px;
+  }
+}
+
+@media only screen and (max-width: 715px) {
+  .canvasScroll {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 400px;
+  }
+
+  .editZoneImg {
+    max-height: 100%;
+    overflow-y: auto;
+  }
+
+  .editZoneImg {
+    position: fixed;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    padding: 25px;
+    background-color: #fff;
+    top: auto;
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
+    transition: all 0.417s ease-in-out;
+    display: block;
+    opacity: 1;
+    box-shadow: 0 0 25px rgba(26, 26, 28, 0.025);
+    z-index: 10;
+    border-radius: 35px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    width: auto;
+  }
+
+  .nameZone {
+    background-color: #eee;
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+    border-top-right-radius: 35px;
+    border-top-left-radius: 35px;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: -25px;
+    margin-left: -25px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    z-index: 2;
+  }
+
+  .fileUploadLabealBack {
+    margin-left: 25px;
+    margin-right: -25px;
+  }
+
+  .fileUploadLabealAdd {
+    margin-right: 25px;
+    margin-left: -25px;
+  }
+
+  .editImageMain {
+    display: none;
+  }
+
+  .editImageMainMobile {
+    display: flex;
+    justify-content: center;
+  }
+
+  .divAreaEspecifica {
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .bottomWindow {
+    margin-top: 55px;
+  }
+
+  .imageList {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    row-gap: 10px;
+    column-gap: 10.2px;
+    margin-bottom: -80px;
+    margin: -10px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+  }
+
+  .imageList::-webkit-scrollbar {
+    display: none;
+  }
+
+  .fecharBtn {
+    width: auto;
+    right: 25px;
+  }
+}

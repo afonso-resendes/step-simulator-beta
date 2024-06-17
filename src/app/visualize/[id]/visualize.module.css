@@ -1,0 +1,297 @@
+@media only screen and (max-width: 10000px) {
+  .copiaTextMain {
+    align-self: center;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-radius: 100px;
+    background-color: rgba(255, 255, 255, 0.5);
+    justify-content: center;
+    display: flex;
+    width: 350px;
+    align-items: center;
+    margin: auto;
+    gap: 7px;
+    position: fixed;
+    top: 45px;
+    box-shadow: 0 0 50px rgba(90, 161, 255, 0.15);
+    border: 0;
+    margin: auto;
+    left: 0;
+    right: 0;
+    cursor: pointer;
+    transition: all 0.3s;
+    z-index: 1000;
+    transition-timing-function: cubic-bezier(0.3, 0.7, 0.3, 0.5);
+  }
+
+  .copiaTextMain:hover {
+    width: 400px;
+    box-shadow: 0 0 75px rgba(90, 161, 255, 0);
+    background-color: transparent;
+    opacity: 0.8;
+  }
+
+  .copiaText {
+    color: #333;
+    font-family: "Inter";
+    letter-spacing: -0.8px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .poweredTextMain {
+    position: fixed;
+    bottom: 55px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .poweredText {
+    align-self: center;
+    justify-content: center;
+    color: #bfbfbf;
+    font-family: "Inter";
+    letter-spacing: -0.6px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .poweredLogo {
+    width: 75px;
+    height: 28px;
+    margin-left: 10px;
+  }
+}
+
+@media only screen and (max-width: 715px) {
+  .copiaTextMain {
+    bottom: 25px;
+    top: auto;
+  }
+  .copiaTextMain:hover {
+    width: 350px;
+  }
+
+  .poweredTextMain {
+    bottom: 75px;
+  }
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@200;500;800&display=swap");
+
+@font-face {
+  font-family: "Antonio Thin";
+  src: url("/fonts/Antonio-Thin.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Arial";
+  src: url("/fonts/arial.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Arial Bold";
+  src: url("/fonts/arialbd.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Arial Black";
+  src: url("/fonts/ariblk.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Bebas Neue";
+  src: url("/fonts/BebasNeue-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Belinda New";
+  src: url("/fonts/Belinda-New-Regular.otf") format("opentype");
+}
+@font-face {
+  font-family: "College Block";
+  src: url("/fonts/College Block.otf") format("opentype");
+}
+@font-face {
+  font-family: "Constantia";
+  src: url("/fonts/constan.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Constantia Bold";
+  src: url("/fonts/constanb.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Courier";
+  src: url("/fonts/cour.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Courier Bold";
+  src: url("/fonts/courbd.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Filson Pro Bold";
+  src: url("/fonts/FilsonProBold-Bold.otf") format("opentype");
+}
+@font-face {
+  font-family: "Filson Pro Book";
+  src: url("/fonts/FilsonProBook-Book.otf") format("opentype");
+}
+@font-face {
+  font-family: "Filson Pro Heavy";
+  src: url("/fonts/FilsonProHeavy-Heavy.otf") format("opentype");
+}
+@font-face {
+  font-family: "Filson Pro Light";
+  src: url("/fonts/FilsonProLight-Light.otf") format("opentype");
+}
+@font-face {
+  font-family: "Filson Pro Medium Italic";
+  src: url("/fonts/FilsonProMediumItalic-Italic.otf") format("opentype");
+}
+@font-face {
+  font-family: "Filson Pro Regular";
+  src: url("/fonts/FilsonProRegular-Regular.otf") format("opentype");
+}
+@font-face {
+  font-family: "Filson Pro Thin";
+  src: url("/fonts/FilsonProThin-Thin.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Fineday Style One";
+  src: url("/fonts/Fineday-StyleOne.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Fineday Style Two";
+  src: url("/fonts/Fineday-StyleTwo.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Futura Bk BT Book";
+  src: url("/fonts/Futura Bk BT Book.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Futura Md BT Bold";
+  src: url("/fonts/Futura Md BT Bold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Futura Md BT Medium";
+  src: url("/fonts/Futura Md BT Medium.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Ghost Clan";
+  src: url("/fonts/ghostclan.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Graduate Regular";
+  src: url("/fonts/Graduate-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Helvetica Bold";
+  src: url("/fonts/Helvetica-Bold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Helvetica Light";
+  src: url("/fonts/helvetica-light-587ebe5a59211.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Helvetica";
+  src: url("/fonts/Helvetica.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Himalaya";
+  src: url("/fonts/himalaya.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Hudson NY Slab";
+  src: url("/fonts/Hudson NY Slab.otf") format("opentype");
+}
+@font-face {
+  font-family: "Hudson NY Pro Slab Light";
+  src: url("/fonts/HudsonNYProSlab-Light.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Impact";
+  src: url("/fonts/impact.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Kettering 105 Bold";
+  src: url("/fonts/Kettering 105 W00 Bold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Kettering 205 Heavy";
+  src: url("/fonts/Kettering 205 W00 Heavy.ttf") format("truetype");
+}
+@font-face {
+  font-family: "LEMONMILK Bold";
+  src: url("/fonts/LEMONMILK-Bold.otf") format("opentype");
+}
+@font-face {
+  font-family: "LEMONMILK Light";
+  src: url("/fonts/LEMONMILK-Light.otf") format("opentype");
+}
+@font-face {
+  font-family: "LEMONMILK Regular";
+  src: url("/fonts/LEMONMILK-Regular.otf") format("opentype");
+}
+@font-face {
+  font-family: "Libre Baskerville Bold";
+  src: url("/fonts/LibreBaskerville-Bold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Libre Baskerville Regular";
+  src: url("/fonts/LibreBaskerville-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Octin Sports Free Regular";
+  src: url("/fonts/octin-sports-free.rg-regular.otf") format("opentype");
+}
+@font-face {
+  font-family: "Picturama Alternate";
+  src: url("/fonts/PicturamaAlternate.otf") format("opentype");
+}
+@font-face {
+  font-family: "Picturama Founder PERSONAL USE ONLY";
+  src: url("/fonts/PicturamaFounder_PERSONAL_USE_ONLY.otf") format("opentype");
+}
+@font-face {
+  font-family: "Princetown Std Regular";
+  src: url("/fonts/Princetown Std Regular.otf") format("opentype");
+}
+@font-face {
+  font-family: "Resolve Sans Bold Condensed";
+  src: url("/fonts/resolve-sans-w05-bold-cn.otf") format("opentype");
+}
+@font-face {
+  font-family: "Sanchez Italic";
+  src: url("/fonts/Sanchez-Italic.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Sanchez Regular";
+  src: url("/fonts/Sanchez-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Shrikhand Regular";
+  src: url("/fonts/Shrikhand-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Super Plants";
+  src: url("/fonts/Super Plants.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Super Summer Personal Use";
+  src: url("/fonts/Super Summer Personal Use.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Times New Roman";
+  src: url("/fonts/times.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Times New Roman Bold";
+  src: url("/fonts/timesbd.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Yearbook Solid";
+  src: url("/fonts/Yearbook Solid.ttf") format("truetype");
+}
