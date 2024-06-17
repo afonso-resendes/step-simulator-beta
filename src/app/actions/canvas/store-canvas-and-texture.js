@@ -6,7 +6,7 @@ export function storeCanvasAndTexture(mesh, canvas, canvasSize) {
     (canvas.backgroundColor == "#ffffff" || canvas.backgroundColor == "#fff") &&
     canvas._objects == []
   ) {
-    mesh.material.map = null;
+    mesh.current.material.map = null;
     return;
   }
   const staticCanvas = new fabric.Canvas("staticCanvas", {

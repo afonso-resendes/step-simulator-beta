@@ -45,6 +45,8 @@ const Visualize = ({ params }) => {
   const mesh = useRef(null);
 
   useEffect(() => {
+    const textures = 0; //getTextures();
+
     const initializeCanvas = async (scene) => {
       const sceneDataArray = await fetchScene(params);
 
@@ -174,7 +176,7 @@ const Visualize = ({ params }) => {
         });
 
         animate();
-      }, 800);
+      }, 1000);
     };
 
     const sceneLayout = createSceneLayout();
@@ -182,13 +184,11 @@ const Visualize = ({ params }) => {
     const camera = sceneLayout.camera;
     const renderer = sceneLayout.renderer;
     orbit = sceneLayout.orbit;
-    setTimeout(() => {
-      loadGLBModel(url, scene, setIsLoading, renderer, () => {
-        //setTimeout(() => {
+    loadGLBModel(url, scene, setIsLoading, textures, renderer, () => {
+      setTimeout(() => {
         initializeCanvas(scene);
-        //}, 100);
-      });
-    }, 1000);
+      }, 1500);
+    });
     containerRef.current.appendChild(renderer.domElement);
 
     initializeCanvas(scene);

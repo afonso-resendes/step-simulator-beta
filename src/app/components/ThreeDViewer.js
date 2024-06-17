@@ -932,6 +932,13 @@ const ThreeDViewer = () => {
           <div className={styles.exportBtnNot}>
             <button
               onClick={() => {
+                if (editingComponent.current) {
+                  storeCanvasAndTexture(
+                    editingComponent,
+                    fabricCanvas.current,
+                    canvasSize
+                  );
+                }
                 getActiveScene(
                   setDocId,
                   setAllCanvasData,
@@ -1235,9 +1242,9 @@ const ThreeDViewer = () => {
                   <Link
                     className={styles.goToAllkitsBtn}
                     style={{ textDecoration: "none" }}
-                    href={"https://www.allkits.pt"}
+                    href={"https://www.meetstep.com"}
                   >
-                    Voltar à Allkits
+                    Voltar à Step
                   </Link>
                 </div>
               </div>
