@@ -15,6 +15,9 @@ import Link from "next/link";
 import galeryIcon from "@/src/imgs/icons/galeryBlack.png";
 import textIcon from "@/src/imgs/icons/textIcon.png";
 import colorIcon from "@/src/imgs/icons/colorIcon.webp";
+import desenhaIcon from "@/src/imgs/icons/paint-brush.png";
+import mouse from "@/src/imgs/icons/mouse.png";
+import spray from "@/src/imgs/icons/spray.png";
 import model1 from "@/src/imgs/hoodie-options/3foto.png";
 import model2 from "@/src/imgs/hoodie-options/5foto.png";
 import model3 from "@/src/imgs/hoodie-options/2foto.png";
@@ -64,8 +67,6 @@ import styles from "../../styles/threedviewer.module.css";
 import { getActiveScene } from "../actions/firebasee/get-active-scene";
 import { sendData } from "../actions/firebasee/send-data";
 import { scaleRotateMove } from "../actions/canvas/scale-rotate-move-new";
-
-//JR
 
 const ThreeDViewer = () => {
   //VARIABLES//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -176,6 +177,49 @@ const ThreeDViewer = () => {
 
   const [showEditZone, setShowEditZone] = useState(false);
 
+  // DRAWING
+  const [isDrawingMode, setIsDrawingMode] = useState(false);
+
+  const handleBrushSizeChange = (size) => {
+    if (fabricCanvas.current) {
+      fabricCanvas.current.freeDrawingBrush.width = parseInt(size, 10);
+      fabricCanvas.current.renderAll(); // Redesenhe o canvas para aplicar mudanças visíveis
+    }
+  };
+
+  const setBrushColor = (color) => {
+    if (fabricCanvas.current) {
+      fabricCanvas.current.freeDrawingBrush.color = color;
+    }
+  };
+
+  const setBrushType = (type) => {
+    if (!fabricCanvas.current) return;
+
+    let newBrush;
+
+    switch (type) {
+      case "pencil":
+        newBrush = new fabric.PencilBrush(fabricCanvas.current);
+        break;
+      case "spray":
+        newBrush = new fabric.SprayBrush(fabricCanvas.current);
+        break;
+      case "cursor":
+        // Assuming 'cursor' means to toggle off drawing mode
+        fabricCanvas.current.isDrawingMode = false;
+        return;
+      default:
+        fabricCanvas.current.isDrawingMode = false;
+        return;
+    }
+
+    fabricCanvas.current.isDrawingMode = true;
+    newBrush.color = fabricCanvas.current.freeDrawingBrush.color;
+    newBrush.width = fabricCanvas.current.freeDrawingBrush.width;
+    fabricCanvas.current.freeDrawingBrush = newBrush;
+  };
+
   // ANIMACAO PARA APARECER TLM EDITZONE
   useEffect(() => {
     if (!preview && editingComponent.current) {
@@ -230,6 +274,9 @@ const ThreeDViewer = () => {
       backgroundColor: "#fff",
     });
 
+    fabricCanvas.current.freeDrawingBrush.color = "black";
+    fabricCanvas.current.freeDrawingBrush.width = 10;
+
     const texture = new THREE.CanvasTexture(fabricCanvas.current.getElement());
     texture.flipY = false;
     texture.colorSpace = THREE.SRGBColorSpace;
@@ -238,6 +285,13 @@ const ThreeDViewer = () => {
 
     return () => fabricCanvas.current.dispose();
   }, [canvasSize]);
+
+  // DRAWING MODE
+  // const handleDrawingMode = () => {
+  //   if (!isDrawingMode) {
+  //     if (canvasDrawingRef.current) canvasDrawingRef.current.style.scale = 1.4;
+  //   }
+  // };
 
   //MAIN USEEFFECT///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   useEffect(() => {
@@ -557,7 +611,7 @@ const ThreeDViewer = () => {
           ? (editZoneRef.current.style.height = "130px")
           : editingComponent.current &&
             editingComponent.current.name.includes("MIX")
-          ? (editZoneRef.current.style.height = "292px")
+          ? (editZoneRef.current.style.height = "369px")
           : (editZoneRef.current.style.height = "100px");
       }, 10);
     }
@@ -579,7 +633,7 @@ const ThreeDViewer = () => {
       editZoneRef.current.style.transition =
         "right 0.3s cubic-bezier(0.4, 0.0, 0.6, 1.0), scale 0.3s cubic-bezier(0.4, 0.2, 0.5, 1.0), filter 0.4s cubic-bezier(0.9, 0.3, 1.0, 0.0), opacity 0.2s 0.1s linear, scale 0.3s 0.1s cubic-bezier(0.9, 0.3, 0.9, 0.5), top 0.2s 0.2s cubic-bezier(0.6, 1.0, 0.4, 0.0), height 0.1s .4s linear";
       editZoneRef.current.style.scale = 0;
-      editZoneRef.current.style.height = "292px";
+      editZoneRef.current.style.height = "369px";
     }
   };
 
@@ -609,7 +663,7 @@ const ThreeDViewer = () => {
     setColorEditor(false);
     setTextEditor(false);
     setImageEditor(true);
-    editZoneRef.current.style.height = "292px";
+    editZoneRef.current.style.height = "369px";
     editZoneRefChild.current.style.opacity = "0";
     editZoneRef.current.style.transition =
       "height 0.5s cubic-bezier(0.1, 0.7, 0.0, 1.0)";
@@ -622,7 +676,7 @@ const ThreeDViewer = () => {
     setColorEditor(false);
     setTextEditor(true);
     setImageEditor(false);
-    editZoneRef.current.style.height = "292px";
+    editZoneRef.current.style.height = "369px";
     editZoneRef.current.style.transition =
       "all 0.5s cubic-bezier(0.1, 0.7, 0.0, 1.0)";
     editZoneRefChild.current.style.opacity = "0";
@@ -725,7 +779,15 @@ const ThreeDViewer = () => {
           <p>A carregar...</p>
         </div>
       )}
-      <div ref={containerRef} style={{ height: "100%", width: "100%" }} />
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          marginRight: isDrawingMode ? "50%" : 0,
+          transition: "all 0.7s cubic-bezier(0.4, 0.0, 0.6, 1.0)",
+        }}
+        ref={containerRef}
+      />
       <>
         <div ref={editZoneRef} className={styles.editZone}>
           <div className={styles.nameZone}>
@@ -838,7 +900,6 @@ const ThreeDViewer = () => {
                       <button
                         onClick={colorEditorTab}
                         className={styles.divAreaEspecifica}
-                        style={{ borderWidth: 0 }}
                       >
                         <div className={styles.divIcon}>
                           <NextImage
@@ -852,6 +913,30 @@ const ThreeDViewer = () => {
                           <p className={styles.titleText}>Cor</p>
                           <p className={styles.infoText}>
                             Dá um toque final ao teu produto.
+                          </p>
+                        </div>
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          setIsDrawingMode(true);
+                          closeEditor();
+                        }}
+                        className={styles.divAreaEspecifica}
+                        style={{ borderWidth: 0 }}
+                      >
+                        <div className={styles.divIcon}>
+                          <NextImage
+                            src={desenhaIcon}
+                            width={20}
+                            height={20}
+                            alt="step"
+                          />
+                        </div>
+                        <div>
+                          <p className={styles.titleText}>Desenha</p>
+                          <p className={styles.infoText}>
+                            Dá os teus toques especiais de artista.
                           </p>
                         </div>
                       </button>
@@ -889,6 +974,188 @@ const ThreeDViewer = () => {
           </div>
         </div>
 
+        <div
+          style={{
+            opacity: isDrawingMode ? 1 : 0,
+            right: isDrawingMode ? 25 : windowWidth < 750 ? -750 : "-50%",
+            transitionDelay: isDrawingMode ? "2.05s" : "0s",
+            width: isDrawingMode && windowWidth * 0.45,
+            height: isDrawingMode && windowWidth * 0.45,
+            zIndex:
+              windowWidth < 750
+                ? !isDrawingMode
+                  ? -1
+                  : 10000000000
+                : 10000000000,
+          }}
+          className={styles.canvasDrawingContainer}
+        >
+          <canvas id="fabric-canvas" className={styles.canvasDrawing} />
+        </div>
+
+        {isDrawingMode && (
+          <>
+            <div className={styles.paintingBoard}>
+              <div className={styles.headerOptions}>
+                <h1
+                  onClick={() => setIsDrawingMode(false)}
+                  className={styles.xIcon}
+                >
+                  &#10005;
+                </h1>
+                <input
+                  className={styles.scaleInput}
+                  type="range"
+                  min="1"
+                  max="50"
+                  defaultValue="10"
+                  onChange={(e) => handleBrushSizeChange(e.target.value)}
+                />
+
+                {/* <button onClick={undo}>undo</button> */}
+              </div>
+              <div className={styles.canvasBrushesZone}>
+                <div className={styles.firstBtns}>
+                  <button
+                    className={styles.drawingButton}
+                    onClick={() => setBrushType("cursor")}
+                  >
+                    <NextImage alt="Step" width={25} height={25} src={mouse} />
+                  </button>
+                  <button
+                    className={styles.drawingButton}
+                    onClick={() => setBrushType("pencil")}
+                  >
+                    <NextImage
+                      alt="Step"
+                      width={25}
+                      height={25}
+                      src={desenhaIcon}
+                    />
+                  </button>
+                  <button
+                    className={styles.drawingButton}
+                    onClick={() => setBrushType("spray")}
+                  >
+                    <NextImage alt="Step" width={25} height={25} src={spray} />
+                  </button>
+                  <div className={styles.paleteDeCoresDrawing}>
+                    <button
+                      style={{ backgroundColor: "#feff00" }}
+                      className={styles.paleteCorBtn}
+                      onClick={() => setBrushColor("#feff00")}
+                    />
+                    <button
+                      style={{ backgroundColor: "#88bcec" }}
+                      className={styles.paleteCorBtn}
+                      onClick={() => setBrushColor("#88bcec")}
+                    />
+                    <button
+                      style={{ backgroundColor: "#f8c404" }}
+                      className={styles.paleteCorBtn}
+                      onClick={() => setBrushColor("#f8c404")}
+                    />
+                    <button
+                      style={{ backgroundColor: "#000000" }}
+                      className={styles.paleteCorBtn}
+                      onClick={() => setBrushColor("#070707")}
+                    />
+                    <button
+                      style={{ backgroundColor: "#90240c" }}
+                      className={styles.paleteCorBtn}
+                      onClick={() => setBrushColor("#90240c")}
+                    />
+                    <button
+                      style={{ backgroundColor: "#188434" }}
+                      className={styles.paleteCorBtn}
+                      onClick={() => setBrushColor("#188434")}
+                    />
+                    <button
+                      style={{ backgroundColor: "#f0540c" }}
+                      className={styles.paleteCorBtn}
+                      onClick={() => setBrushColor("#f0540c")}
+                    />
+                    <button
+                      style={{ backgroundColor: "#1004d4" }}
+                      className={styles.paleteCorBtn}
+                      onClick={() => setBrushColor("#1004d4")}
+                    />
+                    <button
+                      style={{ backgroundColor: "#08a4d4" }}
+                      className={styles.paleteCorBtn}
+                      onClick={() => setBrushColor("#08a4d4")}
+                    />
+                    <button
+                      style={{ backgroundColor: "#600c14" }}
+                      className={styles.paleteCorBtn}
+                      onClick={() => setBrushColor("#600c14")}
+                    />
+                    <button
+                      style={{ backgroundColor: "#48cc3c" }}
+                      className={styles.paleteCorBtn}
+                      onClick={() => setBrushColor("#48cc3c")}
+                    />
+                    <button
+                      style={{ backgroundColor: "#d8d49c" }}
+                      className={styles.paleteCorBtn}
+                      onClick={() => setBrushColor("#d8d49c")}
+                    />
+                    <button
+                      style={{ backgroundColor: "#c8c4c4" }}
+                      className={styles.paleteCorBtn}
+                      onClick={() => setBrushColor("#c8c4c4")}
+                    />
+                    <button
+                      style={{ backgroundColor: "#082c0c" }}
+                      className={styles.paleteCorBtn}
+                      onClick={() => setBrushColor("#082c0c")}
+                    />
+                    <button
+                      style={{ backgroundColor: "#080c1c" }}
+                      className={styles.paleteCorBtn}
+                      onClick={() => setBrushColor("#080c1c")}
+                    />
+                    <button
+                      style={{ backgroundColor: "#d02414" }}
+                      className={styles.paleteCorBtn}
+                      onClick={() => setBrushColor("#d02414")}
+                    />
+                    <button
+                      style={{ backgroundColor: "#68147c" }}
+                      className={styles.paleteCorBtn}
+                      onClick={() => setBrushColor("#68147c")}
+                    />
+                    <button
+                      style={{ backgroundColor: "#ffffff" }}
+                      className={styles.paleteCorBtn}
+                      onClick={() => setBrushColor("#ffffff")}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div style={{ height: 50 }}></div>
+            </div>
+            <div className={styles.paintingBoard2}></div>
+            <div className={styles.paintingBoard3}></div>
+            <div className={styles.paintingBoard4}></div>
+            <div className={styles.paintingBoard5}></div>
+            <div className={styles.paintingBoard6}></div>
+            <div className={styles.paintingBoard7}></div>
+            <div className={styles.paintingBoard8}></div>
+            <div className={styles.paintingBoard9}></div>
+            <div className={styles.paintingBoard10}></div>
+            <div className={styles.paintingBoard11}></div>
+            <div className={styles.paintingBoard12}></div>
+            <div className={styles.paintingBoard13}></div>
+            <div className={styles.paintingBoard14}></div>
+            <div className={styles.paintingBoard15}></div>
+            <div className={styles.paintingBoard16}></div>
+            <div className={styles.paintingBoard17}></div>
+            <div className={styles.paintingBoard18}></div>
+            <div className={styles.paintingBoard19}></div>
+          </>
+        )}
+
         {!preview && editingComponent.current && (
           <div
             style={{ right: showEditZone ? "11px" : "-75px" }}
@@ -903,6 +1170,14 @@ const ThreeDViewer = () => {
               </button>
               <button onClick={colorEditorTab}>
                 <NextImage src={colorIcon} width={20} height={20} />
+              </button>
+              <button
+                onClick={() => {
+                  setIsDrawingMode(true);
+                  closeEditor();
+                }}
+              >
+                <NextImage src={desenhaIcon} width={20} height={20} />
               </button>
             </div>
           </div>

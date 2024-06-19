@@ -47,8 +47,6 @@ export function createSceneLayout() {
   // scene.add(hemisphereLight);
 
   const ambientLight = new THREE.AmbientLight(0xffffff, 2); // luz para se ver à frente
-  ambientLight.lookAt(0, 0, 0);
-  ambientLight.castShadow = true;
 
   const directionLight = new THREE.DirectionalLight(0xffffff, 0.5); // luz para se ver à frente
   const directionLightTRAS = new THREE.DirectionalLight(0xffffff, 0.5); // luz para se ver à frente
