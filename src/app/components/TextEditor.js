@@ -34,6 +34,7 @@ const TextEditor = forwardRef(
       setFillColor,
       editingComponent,
       editZoneRefChild,
+      editZoneRef,
       forceClose,
       setActiveObject,
       canvasSize,
@@ -260,19 +261,17 @@ const TextEditor = forwardRef(
       <div
         // style={{ height: heightWindow, opacity: 0 }}
         style={{
-          height:
-            window.innerWidth < 715
-              ? !activeObject
-                ? fabricCanvas.current._objects.filter(
-                    (obj) => obj instanceof fabric.Textbox
-                  ).length == 1
-                  ? 90
-                  : 70 *
-                    fabricCanvas.current._objects.filter(
-                      (obj) => obj instanceof fabric.Textbox
-                    ).length
-                : 170
-              : 292,
+          height: !activeObject
+            ? fabricCanvas.current._objects.filter(
+                (obj) => obj instanceof fabric.Textbox
+              ).length == 1
+              ? 90
+              : 70 *
+                fabricCanvas.current._objects.filter(
+                  (obj) => obj instanceof fabric.Textbox
+                ).length
+            : 302,
+
           opacity: 0,
         }}
         ref={editZoneRefText}
@@ -282,6 +281,7 @@ const TextEditor = forwardRef(
           <button
             className={styles.fileUploadLabealBack}
             onClick={() => {
+              editZoneRef.current.style.height = "369px";
               if (activeObject) {
                 setActiveObject(null);
                 fabricCanvas.current.discardActiveObject();
@@ -529,6 +529,11 @@ const TextEditor = forwardRef(
         ) : (
           <div className={styles.noText}>
             {fabricCanvas.current._objects.map((obj, index) => {
+              editZoneRef.current.style.height =
+                fabricCanvas.current._objects.filter(
+                  (obj) => obj instanceof fabric.Textbox
+                ).length * 90;
+
               if (obj instanceof fabric.Textbox) {
                 return (
                   <div

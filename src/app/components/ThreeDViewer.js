@@ -676,7 +676,12 @@ const ThreeDViewer = () => {
     setColorEditor(false);
     setTextEditor(true);
     setImageEditor(false);
-    editZoneRef.current.style.height = "369px";
+
+    if (textEditor) {
+      editZoneRef.current.style.height = "302px";
+    } else {
+      editZoneRef.current.style.height = "369px";
+    }
     editZoneRef.current.style.transition =
       "all 0.5s cubic-bezier(0.1, 0.7, 0.0, 1.0)";
     editZoneRefChild.current.style.opacity = "0";
@@ -995,6 +1000,7 @@ const ThreeDViewer = () => {
 
         {isDrawingMode && (
           <>
+            {/* <div className={styles.paintingBoardFakeSolution}></div> */}
             <div className={styles.paintingBoard}>
               <div className={styles.headerOptions}>
                 <h1
@@ -1301,6 +1307,7 @@ const ThreeDViewer = () => {
           setFillColor={setFillColor}
           editingComponent={editingComponent}
           editZoneRefChild={editZoneRefChild}
+          editZoneRef={editZoneRef}
           forceClose={forceClose}
           setActiveObject={setActiveObject}
           canvasSize={canvasSize}

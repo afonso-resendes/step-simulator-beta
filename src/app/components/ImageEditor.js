@@ -64,10 +64,10 @@ const ImageEditor = forwardRef(
       setShowCanvas(true);
       loadImageOnCanvas();
       setHeightWindow(window.innerWidth < 715 ? window.innerHeight * 0.8 : 450);
-      editZoneRef.current.style.height = `500px`;
+      editZoneRef.current.style.height = `450px`;
       editZoneRef.current.style.transition =
         "all 0.3s cubic-bezier(0.1, 0.7, 0.0, 1.0)";
-      editZoneImgRef.current.style.height = `500px`;
+      editZoneImgRef.current.style.height = `450px`;
       editZoneImgRef.current.style.transition = "all 0.3s ease-in-out";
     };
 
