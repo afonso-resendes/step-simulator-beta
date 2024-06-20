@@ -495,18 +495,18 @@
 
   /* DRAWING */
   .canvasDrawingContainer {
-    z-index: 1000000;
+    /*z-index: 1000000;*/
     position: absolute;
     width: 43.5%;
     transition: all 0.2s cubic-bezier(0.5, 0, 0, 1);
-    border: 2px solid #0ff;
+    /*border: 2px solid #0ff;*/
   }
 
   .canvasDrawingContainerTest {
     z-index: 10000001;
     position: absolute;
     /* background-color: #0ff; */
-    width: 43.5%;
+    /*width: 43.5%;*/
     transition: all 0.2s cubic-bezier(0.5, 0, 0, 1);
     border: 2px solid #00f;
   }
@@ -514,12 +514,15 @@
   .canvasDrawing {
     width: 100%;
     z-index: 1000000;
-    border: 1px solid #fafafa;
-    align-self: center;
+    /*border: 1px solid #fafafa;*/
+    /*align-self: center;
     align-items: center;
     display: flex;
-    justify-content: center;
-    border: 4px solid #0f0;
+    justify-content: center;*/
+    position: absolute;
+    margin: 0;
+    top: 0;
+    /*border: 4px solid #0f0;*/
   }
 
   .canvasDrawingTest1,
@@ -535,7 +538,7 @@
   }
 
   .canvasDrawingTest1 {
-    border: 4px solid #ef0;
+    /*border: 4px solid #ef0;*/
     width: 100%;
     height: 100%;
   }

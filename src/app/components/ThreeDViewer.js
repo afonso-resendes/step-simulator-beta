@@ -67,6 +67,7 @@ import styles from "../../styles/threedviewer.module.css";
 import { getActiveScene } from "../actions/firebasee/get-active-scene";
 import { sendData } from "../actions/firebasee/send-data";
 import { scaleRotateMove } from "../actions/canvas/scale-rotate-move-new";
+import { colors } from "../assets/colors";
 
 const ThreeDViewer = () => {
   //VARIABLES//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -94,6 +95,7 @@ const ThreeDViewer = () => {
 
   //FABRIC
   let fabricCanvas = useRef(null);
+  const fabricCanvasRef = useRef(null);
   let objectRotation = useRef(0);
   const [activeObject, setActiveObject] = useState(null);
   const [canvasSize, setCanvasSize] = useState(480);
@@ -152,6 +154,7 @@ const ThreeDViewer = () => {
   const [allCanvasData, setAllCanvasData] = useState([]);
 
   const [windowWidth, setWindowWidth] = useState(0);
+  const [windowHeight, setWindowHeight] = useState(0);
 
   // Style based on preview state
   const buttonStyle = {
@@ -244,6 +247,7 @@ const ThreeDViewer = () => {
 
     const updateWindowWidth = () => {
       setWindowWidth(window.innerWidth);
+      setWindowHeight(window.innerHeight);
     };
 
     updateWindowWidth();
@@ -277,7 +281,7 @@ const ThreeDViewer = () => {
     fabricCanvas.current.freeDrawingBrush.color = "black";
     fabricCanvas.current.freeDrawingBrush.width = 10;
 
-    const texture = new THREE.CanvasTexture(fabricCanvas.current.getElement());
+    const texture = new THREE.CanvasTexture(fabricCanvas.current.lowerCanvasEl);
     texture.flipY = false;
     texture.colorSpace = THREE.SRGBColorSpace;
 
@@ -332,10 +336,19 @@ const ThreeDViewer = () => {
     animate();
 
     //FUNCTIONS//////////////////////////////////////////////////////////////////////////
-    function onWindowResize() {
-      camera.aspect = window.innerWidth / window.innerHeight;
+    function onWindowResize(x) {
+      camera.aspect =
+        x == "w"
+          ? window.innerWidth / window.innerHeight
+          : containerRef.current.style.width /
+            containerRef.current.style.height;
       camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      x == "w"
+        ? renderer.setSize(window.innerWidth, window.innerHeight)
+        : renderer.setSize(
+            containerRef.current.style.width,
+            containerRef.current.style.width
+          );
     }
 
     //ACTIONS////////////////////////////////////////////////////////////////////////////
@@ -349,13 +362,19 @@ const ThreeDViewer = () => {
         }
       });
 
-      console.log(numberOfFbricTextures);
+      //console.log(numberOfFbricTextures);
       const isTouchEvent = e.type.includes("touch");
       const x = isTouchEvent ? e.touches[0].clientX : e.clientX;
       const y = isTouchEvent ? e.touches[0].clientY : e.clientY;
 
+      const diferenceWidth = window.innerWidth / 2;
+
+      //console.log(diferenceWidth);
+
+      const offsetX = containerRef.current.getBoundingClientRect().left;
+
       initialMouse = new THREE.Vector2(
-        (x / window.innerWidth) * 2 - 1,
+        ((x - offsetX) / window.innerWidth) * 2 - 1,
         -(y / window.innerHeight) * 2 + 1
       );
       const intersections = getIntersections(
@@ -386,7 +405,7 @@ const ThreeDViewer = () => {
           editingComponent.current &&
           editingComponent.current != clickedMesh
         ) {
-          console.log("active");
+          //console.log("active");
           storeCanvasAndTexture(
             editingComponent,
             fabricCanvas.current,
@@ -462,7 +481,7 @@ const ThreeDViewer = () => {
 
         //NÃO INTERSETA
       } else {
-        console.log("not");
+        //console.log("not");
         selectedMesh.current = null;
         if (editingComponent.current)
           storeCanvasAndTexture(
@@ -503,6 +522,7 @@ const ThreeDViewer = () => {
     const handleMove = (x, y) => {
       if (!isDragging || orbit.enabled) return;
       orbit.enabled = false;
+      const offsetX = containerRef.current.getBoundingClientRect().left;
 
       scaleRotateMove(
         x,
@@ -531,7 +551,8 @@ const ThreeDViewer = () => {
         lastDUVRecorded,
         lastDCursorRecorded,
         lastDeltaUVRecorded,
-        orbit
+        orbit,
+        offsetX
       );
     };
 
@@ -549,7 +570,8 @@ const ThreeDViewer = () => {
     }
 
     //LISTENERS////////////////////////////////////////////////////////////////////////////
-    window.addEventListener("resize", onWindowResize);
+    window.addEventListener("resize", () => onWindowResize("w"));
+    containerRef.current.addEventListener("resize", () => onWindowResize("c"));
     containerRef.current.addEventListener("mousedown", onMouseDown);
     containerRef.current.addEventListener("mousemove", onMouseMove);
     containerRef.current.addEventListener("mouseup", onMouseUp);
@@ -563,16 +585,49 @@ const ThreeDViewer = () => {
       passive: true,
     });
 
-    fabricCanvas.current.on("object:modified", updateTexture());
-    fabricCanvas.current.on("object:scaling", updateTexture());
+    /*fabricCanvasRef.current.addEventListener("mousemove", () => {
+      //setTimeout(() => {
+      fabricCanvas.current.renderAll();
+      updateTexture();
+      //console.log(fabricCanvas.current);
+      //}, 50);
+    });
+
+    fabricCanvas.current.on("path:created", () => {
+      setTimeout(() => {
+        updateTexture();
+      }, 50);
+      console.log(fabricCanvas.current);
+    });
+
+    fabricCanvas.current.on("mouse:down", () => {
+      console.log(fabricCanvas.current);
+    });
+
+    fabricCanvas.current.on("object:modified", () => {
+      console.log("puu");
+    });
+    /*fabricCanvas.current.on("object:scaling", updateTexture());
     fabricCanvas.current.on("object:moving", updateTexture());
     fabricCanvas.current.on("object:rotating", updateTexture());
     fabricCanvas.current.on("object:added", updateTexture());
+    fabricCanvas.current.on("mouse:down", updateTexture());
+    fabricCanvas.current.on("mouse:move", updateTexture());
+    fabricCanvas.current.on("mouse:up", updateTexture());*/
+
+    fabricCanvas.current.on("mouse:move", function (event) {
+      if (event && event.e) {
+        console.log("ooo");
+        // Update the Fabric.js canvas and then update the texture
+        fabricCanvas.current.renderAll(); // Render the Fabric.js canvas
+        updateTexture(); // Update the Three.js texture
+      }
+    });
 
     return () => {
       renderer.domElement.remove();
       renderer.dispose();
-      window.removeEventListener("resize", onWindowResize);
+      window.removeEventListener("resize", () => onWindowResize("w"));
       if (containerRef.current) {
         containerRef.current.removeEventListener("mousedown", onMouseDown);
         containerRef.current.removeEventListener("mousemove", onMouseMove);
@@ -580,12 +635,29 @@ const ThreeDViewer = () => {
         containerRef.current.removeEventListener("touchstart", onMouseDown);
         containerRef.current.removeEventListener("touchmove", onTouchMove);
         containerRef.current.removeEventListener("touchend", onMouseUp);
+        containerRef.current.removeEventListener("resize", () =>
+          onWindowResize("c")
+        );
       }
-      fabricCanvas.current.off("object:modified", updateTexture());
+      /*fabricCanvas.current.off("object:modified", updateTexture());
       fabricCanvas.current.off("object:scaling", updateTexture());
       fabricCanvas.current.off("object:moving", updateTexture());
       fabricCanvas.current.off("object:rotating", updateTexture());
       fabricCanvas.current.off("object:added", updateTexture());
+      fabricCanvas.current.off("mouse:down", updateTexture());
+      fabricCanvas.current.off("mouse:move", updateTexture());
+      fabricCanvas.current.off("mouse:up", updateTexture());*/
+
+      /*fabricCanvasRef.current.removeEventListener("mouseup", () => {
+        setTimeout(() => {
+          updateTexture();
+        }, 50);
+      });
+      fabricCanvas.current.off("path:created", () => {
+        setTimeout(() => {
+          updateTexture();
+        }, 50);
+      });*/
     };
   }, [escolheBtn]);
 
@@ -789,7 +861,15 @@ const ThreeDViewer = () => {
           width: "100%",
           height: "100%",
           marginRight: isDrawingMode ? "50%" : 0,
+          //right: isDrawingMode ? "500px" : 0,
+          //transform: "translateX(-25%)",
+          //transformOrigin: "-25% 0",
+          //top: 0,
+          //left: -500,
           transition: "all 0.7s cubic-bezier(0.4, 0.0, 0.6, 1.0)",
+          border: "2px solid #000",
+          //position: "relative",
+          //scale: "0.5",
         }}
         ref={containerRef}
       />
@@ -982,20 +1062,28 @@ const ThreeDViewer = () => {
         <div
           style={{
             opacity: isDrawingMode ? 1 : 0,
-            right: isDrawingMode ? 25 : windowWidth < 750 ? -750 : "-50%",
+            right: isDrawingMode ? 20 : windowWidth < 750 ? -750 : "-50%",
             transitionDelay: isDrawingMode ? "2.05s" : "0s",
-            width: isDrawingMode && windowWidth * 0.45,
-            height: isDrawingMode && windowWidth * 0.45,
+            width: windowWidth * 0.45,
+            height: windowWidth * 0.45,
             zIndex:
               windowWidth < 750
                 ? !isDrawingMode
                   ? -1
                   : 10000000000
                 : 10000000000,
+            backgroundColor: "#9a5",
           }}
+          ref={fabricCanvasRef}
           className={styles.canvasDrawingContainer}
         >
-          <canvas id="fabric-canvas" className={styles.canvasDrawing} />
+          <canvas
+            id="fabric-canvas"
+            className={styles.canvasDrawing}
+            style={{
+              transform: "scale(0.8)",
+            }}
+          />
         </div>
 
         {isDrawingMode && (
@@ -1046,96 +1134,14 @@ const ThreeDViewer = () => {
                     <NextImage alt="Step" width={25} height={25} src={spray} />
                   </button>
                   <div className={styles.paleteDeCoresDrawing}>
-                    <button
-                      style={{ backgroundColor: "#feff00" }}
-                      className={styles.paleteCorBtn}
-                      onClick={() => setBrushColor("#feff00")}
-                    />
-                    <button
-                      style={{ backgroundColor: "#88bcec" }}
-                      className={styles.paleteCorBtn}
-                      onClick={() => setBrushColor("#88bcec")}
-                    />
-                    <button
-                      style={{ backgroundColor: "#f8c404" }}
-                      className={styles.paleteCorBtn}
-                      onClick={() => setBrushColor("#f8c404")}
-                    />
-                    <button
-                      style={{ backgroundColor: "#000000" }}
-                      className={styles.paleteCorBtn}
-                      onClick={() => setBrushColor("#070707")}
-                    />
-                    <button
-                      style={{ backgroundColor: "#90240c" }}
-                      className={styles.paleteCorBtn}
-                      onClick={() => setBrushColor("#90240c")}
-                    />
-                    <button
-                      style={{ backgroundColor: "#188434" }}
-                      className={styles.paleteCorBtn}
-                      onClick={() => setBrushColor("#188434")}
-                    />
-                    <button
-                      style={{ backgroundColor: "#f0540c" }}
-                      className={styles.paleteCorBtn}
-                      onClick={() => setBrushColor("#f0540c")}
-                    />
-                    <button
-                      style={{ backgroundColor: "#1004d4" }}
-                      className={styles.paleteCorBtn}
-                      onClick={() => setBrushColor("#1004d4")}
-                    />
-                    <button
-                      style={{ backgroundColor: "#08a4d4" }}
-                      className={styles.paleteCorBtn}
-                      onClick={() => setBrushColor("#08a4d4")}
-                    />
-                    <button
-                      style={{ backgroundColor: "#600c14" }}
-                      className={styles.paleteCorBtn}
-                      onClick={() => setBrushColor("#600c14")}
-                    />
-                    <button
-                      style={{ backgroundColor: "#48cc3c" }}
-                      className={styles.paleteCorBtn}
-                      onClick={() => setBrushColor("#48cc3c")}
-                    />
-                    <button
-                      style={{ backgroundColor: "#d8d49c" }}
-                      className={styles.paleteCorBtn}
-                      onClick={() => setBrushColor("#d8d49c")}
-                    />
-                    <button
-                      style={{ backgroundColor: "#c8c4c4" }}
-                      className={styles.paleteCorBtn}
-                      onClick={() => setBrushColor("#c8c4c4")}
-                    />
-                    <button
-                      style={{ backgroundColor: "#082c0c" }}
-                      className={styles.paleteCorBtn}
-                      onClick={() => setBrushColor("#082c0c")}
-                    />
-                    <button
-                      style={{ backgroundColor: "#080c1c" }}
-                      className={styles.paleteCorBtn}
-                      onClick={() => setBrushColor("#080c1c")}
-                    />
-                    <button
-                      style={{ backgroundColor: "#d02414" }}
-                      className={styles.paleteCorBtn}
-                      onClick={() => setBrushColor("#d02414")}
-                    />
-                    <button
-                      style={{ backgroundColor: "#68147c" }}
-                      className={styles.paleteCorBtn}
-                      onClick={() => setBrushColor("#68147c")}
-                    />
-                    <button
-                      style={{ backgroundColor: "#ffffff" }}
-                      className={styles.paleteCorBtn}
-                      onClick={() => setBrushColor("#ffffff")}
-                    />
+                    {Object.values(colors).map((color, index) => (
+                      <button
+                        key={index}
+                        style={{ backgroundColor: color }}
+                        className={styles.paleteCorBtn}
+                        onClick={() => setBrushColor(color)}
+                      />
+                    ))}
                   </div>
                 </div>
               </div>

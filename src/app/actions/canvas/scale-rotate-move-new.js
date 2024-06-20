@@ -28,12 +28,14 @@ export function scaleRotateMove(
   lastDUVRecorded,
   lastDCursorRecorded,
   lastDeltaUVRecorded,
-  orbit
+  orbit,
+  offsetX
 ) {
   orbit.enabled = false;
   const canvasW = fabricCanvas.current.width;
   const canvasH = fabricCanvas.current.height;
-  currentMouse.x = (x / window.innerWidth) * 2 - 1;
+
+  currentMouse.x = ((x - offsetX) / window.innerWidth) * 2 - 1;
   currentMouse.y = -(y / window.innerHeight) * 2 + 1;
 
   const isHandleSelected = selectImageResult.selectedHandle;
