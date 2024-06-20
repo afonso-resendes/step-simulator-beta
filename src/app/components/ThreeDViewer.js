@@ -98,7 +98,7 @@ const ThreeDViewer = () => {
   const fabricCanvasRef = useRef(null);
   let objectRotation = useRef(0);
   const [activeObject, setActiveObject] = useState(null);
-  const [canvasSize, setCanvasSize] = useState(480);
+  const [canvasSize, setCanvasSize] = useState(1024);
   let originalLeft = useRef(null);
   let originalTop = useRef(null);
   let originalOCoords = useRef(null);
@@ -240,7 +240,7 @@ const ThreeDViewer = () => {
     const isSafari = /Safari/.test(userAgent) && !isChrome;
 
     if (isSafari) {
-      setCanvasSize(480);
+      setCanvasSize(1024);
     } else {
       setCanvasSize(1024);
     }
@@ -867,7 +867,6 @@ const ThreeDViewer = () => {
           //top: 0,
           //left: -500,
           transition: "all 0.7s cubic-bezier(0.4, 0.0, 0.6, 1.0)",
-          border: "2px solid #000",
           //position: "relative",
           //scale: "0.5",
         }}
@@ -1062,17 +1061,19 @@ const ThreeDViewer = () => {
         <div
           style={{
             opacity: isDrawingMode ? 1 : 0,
-            right: isDrawingMode ? 20 : windowWidth < 750 ? -750 : "-50%",
+            right: isDrawingMode ? "-5%" : windowWidth < 750 ? -750 : "-50%",
             transitionDelay: isDrawingMode ? "2.05s" : "0s",
-            width: windowWidth * 0.45,
-            height: windowWidth * 0.45,
+            width: windowWidth * 0.43,
+            height: windowWidth * 0.43,
+            transform: "translateX(-15%)",
+            marginTop: 15,
             zIndex:
               windowWidth < 750
                 ? !isDrawingMode
                   ? -1
                   : 10000000000
                 : 10000000000,
-            backgroundColor: "#9a5",
+            backgroundColor: "#9a5aaa11",
           }}
           ref={fabricCanvasRef}
           className={styles.canvasDrawingContainer}
@@ -1081,7 +1082,7 @@ const ThreeDViewer = () => {
             id="fabric-canvas"
             className={styles.canvasDrawing}
             style={{
-              transform: "scale(0.8)",
+              transform: "scale(0.8) translateX(-12.5%) translateY(-12.5%)",
             }}
           />
         </div>

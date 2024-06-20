@@ -508,7 +508,7 @@
     /* background-color: #0ff; */
     /*width: 43.5%;*/
     transition: all 0.2s cubic-bezier(0.5, 0, 0, 1);
-    border: 2px solid #00f;
+    /* border: 2px solid #00f; */
   }
 
   .canvasDrawing {
