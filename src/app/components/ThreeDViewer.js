@@ -111,6 +111,7 @@ const ThreeDViewer = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [preview, setPreview] = useState(false);
   const [inputImage, setInputImage] = useState("");
+  const [drawCanvasSize, setDrawCanvasSize] = useState(null);
 
   const editZoneRef = useRef(null);
   const editZoneRefChild = useRef(null);
@@ -241,8 +242,10 @@ const ThreeDViewer = () => {
 
     if (isSafari) {
       setCanvasSize(480);
+      setDrawCanvasSize((window.innerWidth * 0.4) / 480);
     } else {
       setCanvasSize(1024);
+      setDrawCanvasSize((window.innerWidth * 0.4) / 1024);
     }
 
     const updateWindowWidth = () => {
@@ -349,6 +352,8 @@ const ThreeDViewer = () => {
             containerRef.current.style.width,
             containerRef.current.style.width
           );
+
+      setDrawCanvasSize((window.innerWidth * 0.4) / canvasSize);
     }
 
     //ACTIONS////////////////////////////////////////////////////////////////////////////
@@ -1072,7 +1077,7 @@ const ThreeDViewer = () => {
                   ? -1
                   : 10000000000
                 : 10000000000,
-            backgroundColor: "#9a5",
+            //backgroundColor: "#9a5",
           }}
           ref={fabricCanvasRef}
           className={styles.canvasDrawingContainer}
@@ -1081,7 +1086,11 @@ const ThreeDViewer = () => {
             id="fabric-canvas"
             className={styles.canvasDrawing}
             style={{
-              transform: "scale(0.8)",
+              //transform: "scale(0.8)",
+              transform: `translateX(-7.5%) translateY(-6%) scale(${drawCanvasSize})`,
+              border: "2px solid #000",
+              boxShadow: "0 0 10px 5px rgba(0,0,0,0.05)",
+              borderRadius: "25px",
             }}
           />
         </div>
@@ -1095,6 +1104,7 @@ const ThreeDViewer = () => {
                   onClick={() => setIsDrawingMode(false)}
                   className={styles.xIcon}
                 >
+                  {drawCanvasSize}
                   &#10005;
                 </h1>
                 <input
