@@ -498,7 +498,7 @@
     /*z-index: 1000000;*/
     position: absolute;
     width: 43.5%;
-    transition: all 0.2s cubic-bezier(0.5, 0, 0, 1);
+    /*transition: all 0.2s cubic-bezier(0.5, 0, 0, 1);*/
     /*border: 2px solid #0ff;*/
   }
 

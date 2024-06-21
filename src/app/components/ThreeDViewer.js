@@ -1068,9 +1068,9 @@ const ThreeDViewer = () => {
             opacity: isDrawingMode ? 1 : 0,
             right: isDrawingMode ? "-5%" : windowWidth < 750 ? -750 : "-50%",
             transitionDelay: isDrawingMode ? "2.05s" : "0s",
-            width: windowWidth * 0.43,
-            height: windowWidth * 0.43,
-            transform: "translateX(-15%)",
+            width: windowWidth * 0.4,
+            height: windowWidth * 0.4,
+            //transform: "translateX(-15%)",
             marginTop: 15,
             zIndex:
               windowWidth < 750
@@ -1079,6 +1079,7 @@ const ThreeDViewer = () => {
                   : 10000000000
                 : 10000000000,
             //backgroundColor: "#9a5",
+            //transform: "scale(0.8)",
           }}
           ref={fabricCanvasRef}
           className={styles.canvasDrawingContainer}
@@ -1087,11 +1088,15 @@ const ThreeDViewer = () => {
             id="fabric-canvas"
             className={styles.canvasDrawing}
             style={{
-              //transform: "scale(0.8)",
-              transform: `translateX(-7.5%) translateY(-6%) scale(${drawCanvasSize})`,
-              border: "2px solid #000",
+              borderRadius: "45px",
+              transform: `scale(${drawCanvasSize}) translateX(-${
+                (drawCanvasSize * window.innerWidth) / 38
+              }%) translateY(-${drawCanvasSize * 20}%)`,
+              //border: "2px solid #000",
               boxShadow: "0 0 10px 5px rgba(0,0,0,0.05)",
-              borderRadius: "25px",
+              borderRadius: "45px",
+              //transitionDelay: 0,
+              backgroundColor: "#6a3",
             }}
           />
         </div>
@@ -1105,7 +1110,7 @@ const ThreeDViewer = () => {
                   onClick={() => setIsDrawingMode(false)}
                   className={styles.xIcon}
                 >
-                  {drawCanvasSize}
+                  {drawCanvasSize * 10}
                   &#10005;
                 </h1>
                 <input
