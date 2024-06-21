@@ -112,6 +112,7 @@ const ThreeDViewer = () => {
   const [preview, setPreview] = useState(false);
   const [inputImage, setInputImage] = useState("");
   const [drawCanvasSize, setDrawCanvasSize] = useState(null);
+  let isDrawing = false;
 
   const editZoneRef = useRef(null);
   const editZoneRefChild = useRef(null);
@@ -353,7 +354,10 @@ const ThreeDViewer = () => {
             containerRef.current.style.width
           );
 
+      fabricCanvasRef.current.style.transitionDelay = "0s";
       setDrawCanvasSize((window.innerWidth * 0.4) / canvasSize);
+      setWindowHeight(window.innerHeight);
+      setWindowWidth(window.innerWidth);
     }
 
     //ACTIONS////////////////////////////////////////////////////////////////////////////
@@ -486,7 +490,7 @@ const ThreeDViewer = () => {
 
         //NÃO INTERSETA
       } else {
-        //console.log("not");
+        console.log(isDrawing);
         selectedMesh.current = null;
         if (editingComponent.current)
           storeCanvasAndTexture(
@@ -590,6 +594,11 @@ const ThreeDViewer = () => {
       passive: true,
     });
 
+    fabricCanvas.current.on("mouse:up", () => {
+      fabricCanvas.current.renderAll();
+      updateTexture();
+    });
+
     /*fabricCanvasRef.current.addEventListener("mousemove", () => {
       //setTimeout(() => {
       fabricCanvas.current.renderAll();
@@ -620,14 +629,14 @@ const ThreeDViewer = () => {
     fabricCanvas.current.on("mouse:move", updateTexture());
     fabricCanvas.current.on("mouse:up", updateTexture());*/
 
-    fabricCanvas.current.on("mouse:move", function (event) {
+    /*fabricCanvas.current.on("mouse:move", function (event) {
       if (event && event.e) {
         console.log("ooo");
         // Update the Fabric.js canvas and then update the texture
         fabricCanvas.current.renderAll(); // Render the Fabric.js canvas
         updateTexture(); // Update the Three.js texture
       }
-    });
+    });*/
 
     return () => {
       renderer.domElement.remove();
@@ -1009,6 +1018,7 @@ const ThreeDViewer = () => {
                       <button
                         onClick={() => {
                           setIsDrawingMode(true);
+                          isDrawing = true;
                           closeEditor();
                         }}
                         className={styles.divAreaEspecifica}
@@ -1066,11 +1076,10 @@ const ThreeDViewer = () => {
         <div
           style={{
             opacity: isDrawingMode ? 1 : 0,
-            right: isDrawingMode ? "-5%" : windowWidth < 750 ? -750 : "-50%",
+            right: isDrawingMode ? `-100px` : windowWidth < 750 ? -750 : "-50%",
             transitionDelay: isDrawingMode ? "2.05s" : "0s",
-            width: windowWidth * 0.4,
-            height: windowWidth * 0.4,
-            //transform: "translateX(-15%)",
+            width: canvasSize,
+            height: canvasSize,
             marginTop: 15,
             zIndex:
               windowWidth < 750
@@ -1078,27 +1087,25 @@ const ThreeDViewer = () => {
                   ? -1
                   : 10000000000
                 : 10000000000,
-            //backgroundColor: "#9a5",
-            //transform: "scale(0.8)",
+            transform: `scale(${drawCanvasSize})`,
+            boxShadow: "0 0 20px 1px rgba(0,0,0,0.05)",
+            borderRadius: "50px",
           }}
           ref={fabricCanvasRef}
           className={styles.canvasDrawingContainer}
         >
-          <canvas
-            id="fabric-canvas"
-            className={styles.canvasDrawing}
-            style={{
-              borderRadius: "45px",
-              transform: `scale(${drawCanvasSize}) translateX(-${
-                (drawCanvasSize * window.innerWidth) / 38
-              }%) translateY(-${drawCanvasSize * 20}%)`,
-              //border: "2px solid #000",
-              boxShadow: "0 0 10px 5px rgba(0,0,0,0.05)",
-              borderRadius: "45px",
-              //transitionDelay: 0,
-              backgroundColor: "#6a3",
-            }}
-          />
+          {
+            <canvas
+              id="fabric-canvas"
+              className={styles.canvasDrawing}
+              style={{
+                //transform: `scale(${drawCanvasSize})`,
+                width: "100%",
+                transformOrigin: "top left",
+                borderRadius: "50px",
+              }}
+            />
+          }
         </div>
 
         {isDrawingMode && (
@@ -1107,10 +1114,12 @@ const ThreeDViewer = () => {
             <div className={styles.paintingBoard}>
               <div className={styles.headerOptions}>
                 <h1
-                  onClick={() => setIsDrawingMode(false)}
+                  onClick={() => {
+                    setIsDrawingMode(false);
+                    isDrawing = false;
+                  }}
                   className={styles.xIcon}
                 >
-                  {drawCanvasSize * 10}
                   &#10005;
                 </h1>
                 <input
@@ -1202,6 +1211,7 @@ const ThreeDViewer = () => {
               <button
                 onClick={() => {
                   setIsDrawingMode(true);
+                  isDrawing = true;
                   closeEditor();
                 }}
               >
