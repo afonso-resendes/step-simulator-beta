@@ -490,7 +490,7 @@ const ThreeDViewer = () => {
 
         //NÃO INTERSETA
       } else {
-        console.log(isDrawing);
+        console.log(isDrawingMode);
         selectedMesh.current = null;
         if (editingComponent.current)
           storeCanvasAndTexture(
