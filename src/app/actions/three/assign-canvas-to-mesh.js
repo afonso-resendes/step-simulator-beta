@@ -10,4 +10,5 @@ export function assignCanvasToMesh(mesh, canvasSize) {
   });
   //if (mesh && mesh.userData && mesh.userData.canvas)
   mesh.userData.canvas = ownCanvas;
+  ownCanvas.dispose();
 }
