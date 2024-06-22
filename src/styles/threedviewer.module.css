@@ -18,6 +18,12 @@
     width: 311px;
     scale: 0;
     filter: blur(25px);
+    transition: right 0.3s cubic-bezier(0.4, 0, 0.6, 1),
+      scale 0.3s cubic-bezier(0.4, 0.2, 0.6, 1),
+      top 0.2s cubic-bezier(0.4, 0, 0.6, 1),
+      filter 0.4s 0.1s cubic-bezier(0.1, 0.7, 0, 1), opacity 0.4s linear,
+      scale 0.4s cubic-bezier(0.1, 0.7, 0, 1),
+      height 0.3s cubic-bezier(0.1, 0.7, 0, 1);
   }
 
   .editZone::-webkit-scrollbar {
@@ -87,6 +93,7 @@
 
   .editHeader {
     margin-top: 65px;
+    transition: all 0.3s linear;
   }
 
   .divAreaEspecifica {

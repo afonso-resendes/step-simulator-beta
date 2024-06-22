@@ -371,14 +371,11 @@ const ThreeDViewer = () => {
         }
       });
 
-      //console.log(numberOfFbricTextures);
       const isTouchEvent = e.type.includes("touch");
       const x = isTouchEvent ? e.touches[0].clientX : e.clientX;
       const y = isTouchEvent ? e.touches[0].clientY : e.clientY;
 
       const diferenceWidth = window.innerWidth / 2;
-
-      //console.log(diferenceWidth);
 
       const offsetX = containerRef.current.getBoundingClientRect().left;
 
@@ -414,7 +411,6 @@ const ThreeDViewer = () => {
           editingComponent.current &&
           editingComponent.current != clickedMesh
         ) {
-          //console.log("active");
           storeCanvasAndTexture(
             editingComponent,
             fabricCanvas.current,
@@ -599,45 +595,6 @@ const ThreeDViewer = () => {
       updateTexture();
     });
 
-    /*fabricCanvasRef.current.addEventListener("mousemove", () => {
-      //setTimeout(() => {
-      fabricCanvas.current.renderAll();
-      updateTexture();
-      //console.log(fabricCanvas.current);
-      //}, 50);
-    });
-
-    fabricCanvas.current.on("path:created", () => {
-      setTimeout(() => {
-        updateTexture();
-      }, 50);
-      console.log(fabricCanvas.current);
-    });
-
-    fabricCanvas.current.on("mouse:down", () => {
-      console.log(fabricCanvas.current);
-    });
-
-    fabricCanvas.current.on("object:modified", () => {
-      console.log("puu");
-    });
-    /*fabricCanvas.current.on("object:scaling", updateTexture());
-    fabricCanvas.current.on("object:moving", updateTexture());
-    fabricCanvas.current.on("object:rotating", updateTexture());
-    fabricCanvas.current.on("object:added", updateTexture());
-    fabricCanvas.current.on("mouse:down", updateTexture());
-    fabricCanvas.current.on("mouse:move", updateTexture());
-    fabricCanvas.current.on("mouse:up", updateTexture());*/
-
-    /*fabricCanvas.current.on("mouse:move", function (event) {
-      if (event && event.e) {
-        console.log("ooo");
-        // Update the Fabric.js canvas and then update the texture
-        fabricCanvas.current.renderAll(); // Render the Fabric.js canvas
-        updateTexture(); // Update the Three.js texture
-      }
-    });*/
-
     return () => {
       renderer.domElement.remove();
       renderer.dispose();
@@ -653,25 +610,6 @@ const ThreeDViewer = () => {
           onWindowResize("c")
         );
       }
-      /*fabricCanvas.current.off("object:modified", updateTexture());
-      fabricCanvas.current.off("object:scaling", updateTexture());
-      fabricCanvas.current.off("object:moving", updateTexture());
-      fabricCanvas.current.off("object:rotating", updateTexture());
-      fabricCanvas.current.off("object:added", updateTexture());
-      fabricCanvas.current.off("mouse:down", updateTexture());
-      fabricCanvas.current.off("mouse:move", updateTexture());
-      fabricCanvas.current.off("mouse:up", updateTexture());*/
-
-      /*fabricCanvasRef.current.removeEventListener("mouseup", () => {
-        setTimeout(() => {
-          updateTexture();
-        }, 50);
-      });
-      fabricCanvas.current.off("path:created", () => {
-        setTimeout(() => {
-          updateTexture();
-        }, 50);
-      });*/
     };
   }, [escolheBtn]);
 
@@ -689,16 +627,22 @@ const ThreeDViewer = () => {
         editZoneRef.current.style.scale = 1;
         editZoneRef.current.style.filter = "none";
         editZoneRef.current.style.top = "110px";
-        editZoneRef.current.style.transition =
-          "right 0.3s cubic-bezier(0.4, 0.0, 0.6, 1.0), scale 0.3s cubic-bezier(0.4, 0.2, 0.6, 1.0), top 0.2s cubic-bezier(0.4, 0.0, 0.6, 1.0), filter 0.4s 0.1s cubic-bezier(0.1, 0.7, 0.0, 1.0), opacity 0.4s linear, scale 0.4s cubic-bezier(0.1, 0.7, 0.0, 1.0), height 0.3s 0.1s cubic-bezier(0.1, 0.7, 0.0, 1.0)";
+        //editZoneRef.current.style.transition =
+        //"right 0.3s cubic-bezier(0.4, 0.0, 0.6, 1.0), scale 0.3s cubic-bezier(0.4, 0.2, 0.6, 1.0), top 0.2s cubic-bezier(0.4, 0.0, 0.6, 1.0), filter 0.4s 0.1s cubic-bezier(0.1, 0.7, 0.0, 1.0), opacity 0.4s linear, scale 0.4s cubic-bezier(0.1, 0.7, 0.0, 1.0), height 0.3s 0.1s cubic-bezier(0.1, 0.7, 0.0, 1.0)";
         editZoneRef.current.style.scale = 1;
-        editingComponent.current &&
+        console.log(editZoneRef.current.children[1].children[0].children);
+        const newHeight =
+          100 +
+          100 *
+            (editZoneRef.current.children[1].children[0].children.length - 1);
+        console.log(newHeight);
+        /*editingComponent.current &&
         editingComponent.current.name.includes("COR")
           ? (editZoneRef.current.style.height = "130px")
           : editingComponent.current &&
             editingComponent.current.name.includes("MIX")
-          ? (editZoneRef.current.style.height = "369px")
-          : (editZoneRef.current.style.height = "100px");
+          ? (editZoneRef.current.style.height = newHeight + "px")
+          : (editZoneRef.current.style.height = "100px");*/
       }, 10);
     }
   };
@@ -716,10 +660,10 @@ const ThreeDViewer = () => {
       editZoneRef.current.style.opacity = 0;
       editZoneRef.current.style.filter = "blur(25px)";
       editZoneRef.current.style.top = "150px";
-      editZoneRef.current.style.transition =
-        "right 0.3s cubic-bezier(0.4, 0.0, 0.6, 1.0), scale 0.3s cubic-bezier(0.4, 0.2, 0.5, 1.0), filter 0.4s cubic-bezier(0.9, 0.3, 1.0, 0.0), opacity 0.2s 0.1s linear, scale 0.3s 0.1s cubic-bezier(0.9, 0.3, 0.9, 0.5), top 0.2s 0.2s cubic-bezier(0.6, 1.0, 0.4, 0.0), height 0.1s .4s linear";
+      //editZoneRef.current.style.transition =
+      //"right 0.3s cubic-bezier(0.4, 0.0, 0.6, 1.0), scale 0.3s cubic-bezier(0.4, 0.2, 0.5, 1.0), filter 0.4s cubic-bezier(0.9, 0.3, 1.0, 0.0), opacity 0.2s 0.1s linear, scale 0.3s 0.1s cubic-bezier(0.9, 0.3, 0.9, 0.5), top 0.2s 0.2s cubic-bezier(0.6, 1.0, 0.4, 0.0), height 0.1s .4s linear";
       editZoneRef.current.style.scale = 0;
-      editZoneRef.current.style.height = "369px";
+      //editZoneRef.current.style.height = "369px";
     }
   };
 
@@ -749,10 +693,10 @@ const ThreeDViewer = () => {
     setColorEditor(false);
     setTextEditor(false);
     setImageEditor(true);
-    editZoneRef.current.style.height = "369px";
+    //editZoneRef.current.style.height = "369px";
     editZoneRefChild.current.style.opacity = "0";
-    editZoneRef.current.style.transition =
-      "height 0.5s cubic-bezier(0.1, 0.7, 0.0, 1.0)";
+    //editZoneRef.current.style.transition =
+    //"height 0.5s cubic-bezier(0.1, 0.7, 0.0, 1.0)";
     editZoneRefChild.current.style.transition =
       "opacity 0.1s cubic-bezier(0.1, 0.7, 0.0, 1.0)";
   };
@@ -763,16 +707,17 @@ const ThreeDViewer = () => {
     setTextEditor(true);
     setImageEditor(false);
 
-    if (textEditor) {
+    let textBpxNumber = 0;
+
+    /*if (textEditor) {
       editZoneRef.current.style.height = "302px";
     } else {
       editZoneRef.current.style.height = "369px";
-    }
-    editZoneRef.current.style.transition =
-      "all 0.5s cubic-bezier(0.1, 0.7, 0.0, 1.0)";
+    }*/
+
+    //editZoneRef.current.style.transition =
+    //"all 0.3s 0.2s cubic-bezier(0.1, 0.7, 0.0, 1.0)";
     editZoneRefChild.current.style.opacity = "0";
-    editZoneRefChild.current.style.transition =
-      "all 0.1s cubic-bezier(0.1, 0.7, 0.0, 1.0)";
   };
 
   const closeColorEditor = () => {
@@ -781,6 +726,7 @@ const ThreeDViewer = () => {
     fabricCanvas.current.renderAll();
     updateTexture();
     setActiveObject(null);
+    editZoneRefChild.current.style.opacity = 1;
   };
 
   const closeTextEditor = () => {
@@ -789,6 +735,7 @@ const ThreeDViewer = () => {
     fabricCanvas.current.renderAll();
     updateTexture();
     setActiveObject(null);
+    editZoneRefChild.current.style.opacity = 1;
   };
 
   const closeImageEditor = () => {
@@ -797,6 +744,7 @@ const ThreeDViewer = () => {
     fabricCanvas.current.renderAll();
     updateTexture();
     setActiveObject(null);
+    editZoneRefChild.current.style.opacity = 1;
   };
 
   const handleBGColorChange = (color) => {
@@ -887,7 +835,50 @@ const ThreeDViewer = () => {
         ref={containerRef}
       />
       <>
-        <div ref={editZoneRef} className={styles.editZone}>
+        <div
+          ref={editZoneRef}
+          className={styles.editZone}
+          style={{
+            //backgroundColor: "#237",
+            height: textEditor
+              ? !activeObject
+                ? 50 +
+                  56 *
+                    fabricCanvas.current._objects.filter(
+                      (obj) => obj instanceof fabric.Textbox
+                    ).length
+                : 300
+              : imageEditor
+              ? !activeObject
+                ? 60 +
+                  103.7 *
+                    Math.floor(
+                      (fabricCanvas.current._objects.filter(
+                        (obj) => obj instanceof fabric.Image
+                      ).length +
+                        2) /
+                        3
+                    )
+                : 292
+              : colorEditor
+              ? 292
+              : editZoneRef.current &&
+                editZoneRef.current.children[1] &&
+                editZoneRef.current.children[1].children[0] &&
+                editZoneRef.current.children[1].children[0].children &&
+                editZoneRef.current.children[1].children[0].children.length
+              ? `${
+                  100 +
+                  70 *
+                    (editZoneRef.current.children[1].children[0].children
+                      .length -
+                      1)
+                }px`
+              : 0,
+            maxHeight: "70vh",
+            //backgroundColor: "#309",
+          }}
+        >
           <div className={styles.nameZone}>
             <button onClick={closeEditor} className={styles.fileUploadLabeal}>
               <p
@@ -969,6 +960,7 @@ const ThreeDViewer = () => {
                           </p>
                         </div>
                       </button>
+
                       <input
                         type="file"
                         id="fileInput"
@@ -1319,6 +1311,8 @@ const ThreeDViewer = () => {
           editingComponent={editingComponent}
           forceClose={forceClose}
           setActiveObject={setActiveObject}
+          inputImage={inputImage}
+          setInputImage={setInputImage}
         />
       )}
 

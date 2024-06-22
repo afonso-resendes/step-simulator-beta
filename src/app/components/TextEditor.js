@@ -148,9 +148,7 @@ const TextEditor = forwardRef(
       editZoneRefText.current.style.opacity = 0;
       editZoneRefText.current.style.transition =
         "opacity 0.2s cubic-bezier(0.1, 0.1, 0.0, 1.0), scale 0.6s 0.2s cubic-bezier(0.4, 0.7, 0.0, 1.0)";
-      editZoneRefChild.current.style.opacity = 1;
-      editZoneRefChild.current.style.transition =
-        "all 0.1s cubic-bezier(0.1, 0.7, -0.4, 1.0)";
+      editZoneRefChild.current.style.opacity = 0;
       setTimeout(() => {
         closeTabs();
       }, 200);
@@ -201,10 +199,12 @@ const TextEditor = forwardRef(
       }, 10);
 
       let add = true;
+      let textboxNumber = 0;
       if (fabricCanvas.current && !activeObject) {
         fabricCanvas.current.forEachObject(function (obj) {
           if (obj instanceof fabric.Textbox) {
             add = false;
+            textboxNumber += 1;
           }
         });
 
@@ -212,6 +212,9 @@ const TextEditor = forwardRef(
           handleAddTextBox("Seu texto aqui");
         } else {
           setDisplayTexts(true);
+          //const newHeight = 100 + textboxNumber * 120;
+          //editZoneRefText.current.style.height = newHeight + "px";
+          //editZoneRef.current.style.height = newHeight + "px";
         }
       }
     }, []);
@@ -222,8 +225,6 @@ const TextEditor = forwardRef(
         editZoneRefText.current.style.transition =
           "opacity 0.2s cubic-bezier(0.1, 0.1, 0.0, 1.0), scale 0.6s 0.2s cubic-bezier(0.4, 0.7, 0.0, 1.0)";
         editZoneRefChild.current.style.opacity = 1;
-        editZoneRefChild.current.style.transition =
-          "all 0.1s cubic-bezier(0.1, 0.7, -0.4, 1.0)";
       }
     }, [forceClose]);
 
@@ -239,49 +240,43 @@ const TextEditor = forwardRef(
             parseInt(textAreaRef.current.style.height) -
             previousTextAreaHeight;
 
-          editZoneRefText.current.style.height = newHeight + "px";
+          //editZoneRefText.current.style.height = newHeight + "px";
         }
       }
     }, [text, windowHeightAdjust]);
-
-    // useEffect(() => {
-    //   console.log("Canvas:", fabricCanvas.current);
-    //   if (fabricCanvas.current) {
-    //     console.log("Objects in Canvas:", fabricCanvas.current._objects);
-    //     console.log(
-    //       "Non-textbox objects count:",
-    //       fabricCanvas.current._objects.filter(
-    //         (obj) => !(obj instanceof fabric.Textbox)
-    //       ).length
-    //     );
-    //   }
-    // }, [fabricCanvas.current]);
 
     return (
       <div
         // style={{ height: heightWindow, opacity: 0 }}
         style={{
           height: !activeObject
-            ? fabricCanvas.current._objects.filter(
-                (obj) => obj instanceof fabric.Textbox
-              ).length == 1
-              ? 90
-              : 70 *
+            ? 50 +
+              56 *
                 fabricCanvas.current._objects.filter(
                   (obj) => obj instanceof fabric.Textbox
                 ).length
-            : 302,
-
-          opacity: 0,
+            : 300,
         }}
         ref={editZoneRefText}
         className={styles.editZoneText}
       >
+        <div
+          style={{
+            height: !activeObject
+              ? 50 +
+                56 *
+                  fabricCanvas.current._objects.filter(
+                    (obj) => obj instanceof fabric.Textbox
+                  ).length
+              : 300,
+          }}
+          className={styles.maskTexts}
+        />
         <div className={styles.nameZone}>
           <button
             className={styles.fileUploadLabealBack}
             onClick={() => {
-              editZoneRef.current.style.height = "369px";
+              //editZoneRef.current.style.height = "369px";
               if (activeObject) {
                 setActiveObject(null);
                 fabricCanvas.current.discardActiveObject();
@@ -529,10 +524,10 @@ const TextEditor = forwardRef(
         ) : (
           <div className={styles.noText}>
             {fabricCanvas.current._objects.map((obj, index) => {
-              editZoneRef.current.style.height =
+              /*editZoneRef.current.style.height =
                 fabricCanvas.current._objects.filter(
                   (obj) => obj instanceof fabric.Textbox
-                ).length * 90;
+                ).length * 90;*/
 
               if (obj instanceof fabric.Textbox) {
                 return (
