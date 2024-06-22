@@ -184,6 +184,7 @@ const ThreeDViewer = () => {
 
   // DRAWING
   const [isDrawingMode, setIsDrawingMode] = useState(false);
+  const isDrawingRef = useRef(false);
 
   const handleBrushSizeChange = (size) => {
     if (fabricCanvas.current) {
@@ -486,7 +487,7 @@ const ThreeDViewer = () => {
 
         //NÃO INTERSETA
       } else {
-        console.log(isDrawingMode);
+        console.log(isDrawingRef.current);
         selectedMesh.current = null;
         if (editingComponent.current)
           storeCanvasAndTexture(
@@ -810,6 +811,10 @@ const ThreeDViewer = () => {
       [e.target.name]: e.target.value,
     });
   };
+
+  useEffect(() => {
+    isDrawingRef.current = isDrawingMode;
+  }, [isDrawingMode]);
 
   return (
     <>
