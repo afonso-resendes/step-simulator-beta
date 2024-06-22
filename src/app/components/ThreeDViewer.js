@@ -1068,7 +1068,7 @@ const ThreeDViewer = () => {
         <div
           style={{
             opacity: isDrawingMode ? 1 : 0,
-            right: isDrawingMode ? `-100px` : windowWidth < 750 ? -750 : "-50%",
+            right: isDrawingMode ? `-100px` : windowWidth < 750 ? -750 : 10000,
             transitionDelay: isDrawingMode ? "2.05s" : "0s",
             width: canvasSize,
             height: canvasSize,
