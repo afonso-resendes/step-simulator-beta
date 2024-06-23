@@ -18,6 +18,7 @@
     z-index: 10;
     border-radius: 35px;
     width: 311px;
+    max-height: 70vh;
   }
 
   .nameZone {

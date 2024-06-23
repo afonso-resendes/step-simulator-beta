@@ -15,7 +15,7 @@
     border-radius: 35px;
     width: 311px;
     height: auto;
-    max-height: 462px;
+    max-height: 70vh;
   }
 
   .editZoneText::-webkit-scrollbar {

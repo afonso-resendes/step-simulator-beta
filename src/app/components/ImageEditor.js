@@ -534,7 +534,7 @@ const ImageEditor = forwardRef(
                   height:
                     window.innerWidth > 715
                       ? !activeObject
-                        ? 93.7 *
+                        ? 105.7 *
                           Math.floor(
                             (fabricCanvas.current._objects.filter(
                               (obj) => obj instanceof fabric.Image

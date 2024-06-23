@@ -256,6 +256,10 @@ const TextEditor = forwardRef(
                   (obj) => obj instanceof fabric.Textbox
                 ).length
             : 300,
+          maskImage:
+            !activeObject &&
+            "linear-gradient(to bottom, white 85%, transparent 98%)",
+          maskSize: !activeObject && "100% 100%",
         }}
         ref={editZoneRefText}
         className={styles.editZoneText}
