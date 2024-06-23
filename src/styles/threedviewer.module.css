@@ -502,11 +502,9 @@
 
   /* DRAWING */
   .canvasDrawingContainer {
-    /*z-index: 1000000;*/
     position: absolute;
-    width: 43.5%;
-    /*transition: all 0.2s cubic-bezier(0.5, 0, 0, 1);*/
-    /*border: 2px solid #0ff;*/
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.05);
+    border-radius: 50px;
   }
 
   .canvasDrawingContainerTest {

@@ -170,6 +170,42 @@ const ThreeDViewer = () => {
     backgroundColor: preview ? "rgba(255, 255, 255, 0.9)" : "#fff",
   };
 
+  let editorStyle = {
+    height: textEditor
+      ? !activeObject
+        ? 50 +
+          56 *
+            fabricCanvas.current._objects.filter(
+              (obj) => obj instanceof fabric.Textbox
+            ).length
+        : 300
+      : imageEditor
+      ? !activeObject
+        ? 60 +
+          103.7 *
+            Math.floor(
+              (fabricCanvas.current._objects.filter(
+                (obj) => obj instanceof fabric.Image
+              ).length +
+                2) /
+                3
+            )
+        : 292
+      : colorEditor
+      ? 292
+      : editZoneRef.current &&
+        editZoneRef.current.children[1] &&
+        editZoneRef.current.children[1].children[0] &&
+        editZoneRef.current.children[1].children[0].children &&
+        editZoneRef.current.children[1].children[0].children.length
+      ? `${
+          100 +
+          70 * (editZoneRef.current.children[1].children[0].children.length - 1)
+        }px`
+      : 0,
+    maxHeight: "70vh",
+  };
+
   let lastDUVRecorded = useRef(null);
   let lastDCursorRecorded = useRef(null);
   let lastDeltaUVRecorded = useRef(null);
@@ -256,6 +292,8 @@ const ThreeDViewer = () => {
     };
 
     updateWindowWidth();
+
+    isDrawingRef.current = false;
 
     window.addEventListener("resize", updateWindowWidth);
 
@@ -444,6 +482,7 @@ const ThreeDViewer = () => {
           );
         }
 
+        let openEd = true;
         setTimeout(() => {
           selectImageResult = selectImage(
             intersectionResult,
@@ -472,6 +511,9 @@ const ThreeDViewer = () => {
               imageEditorTab();
             } else if (selectedObject instanceof fabric.Textbox) {
               textEditorTab();
+            } else if (selectedObject instanceof fabric.Path) {
+              openEd = false;
+              setIsDrawingMode(true);
             }
           } else {
             setActiveObject(null);
@@ -481,14 +523,14 @@ const ThreeDViewer = () => {
               closeAllTabs();
             }, 100);
           }
+          if (openEd) openEditor();
         }, 10);
-
-        openEditor();
 
         //NÃO INTERSETA
       } else {
-        console.log(isDrawingRef.current);
-        selectedMesh.current = null;
+        selectedMesh.current = !isDrawingRef.current
+          ? null
+          : editingComponent.current;
         if (editingComponent.current)
           storeCanvasAndTexture(
             editingComponent,
@@ -497,15 +539,18 @@ const ThreeDViewer = () => {
           );
         closeEditor();
         setTimeout(() => {
-          editingComponent.current = null;
-          fabricCanvas.current.discardActiveObject();
-          fabricCanvas.current.renderAll();
-          setActiveObject(null);
+          if (!isDrawingRef.current) {
+            editingComponent.current = null;
+            fabricCanvas.current.discardActiveObject();
+            setActiveObject(null);
+            fabricCanvas.current.renderAll();
+          }
         }, 10);
         setShowEditZone(false);
 
         editZoneRefChild.current.style.opacity = "1";
       }
+
       editingComponent.current = selectedMesh.current;
     }
 
@@ -628,22 +673,11 @@ const ThreeDViewer = () => {
         editZoneRef.current.style.scale = 1;
         editZoneRef.current.style.filter = "none";
         editZoneRef.current.style.top = "110px";
-        //editZoneRef.current.style.transition =
-        //"right 0.3s cubic-bezier(0.4, 0.0, 0.6, 1.0), scale 0.3s cubic-bezier(0.4, 0.2, 0.6, 1.0), top 0.2s cubic-bezier(0.4, 0.0, 0.6, 1.0), filter 0.4s 0.1s cubic-bezier(0.1, 0.7, 0.0, 1.0), opacity 0.4s linear, scale 0.4s cubic-bezier(0.1, 0.7, 0.0, 1.0), height 0.3s 0.1s cubic-bezier(0.1, 0.7, 0.0, 1.0)";
         editZoneRef.current.style.scale = 1;
-        console.log(editZoneRef.current.children[1].children[0].children);
         const newHeight =
           100 +
           100 *
             (editZoneRef.current.children[1].children[0].children.length - 1);
-        console.log(newHeight);
-        /*editingComponent.current &&
-        editingComponent.current.name.includes("COR")
-          ? (editZoneRef.current.style.height = "130px")
-          : editingComponent.current &&
-            editingComponent.current.name.includes("MIX")
-          ? (editZoneRef.current.style.height = newHeight + "px")
-          : (editZoneRef.current.style.height = "100px");*/
       }, 10);
     }
   };
@@ -661,18 +695,11 @@ const ThreeDViewer = () => {
       editZoneRef.current.style.opacity = 0;
       editZoneRef.current.style.filter = "blur(25px)";
       editZoneRef.current.style.top = "150px";
-      //editZoneRef.current.style.transition =
-      //"right 0.3s cubic-bezier(0.4, 0.0, 0.6, 1.0), scale 0.3s cubic-bezier(0.4, 0.2, 0.5, 1.0), filter 0.4s cubic-bezier(0.9, 0.3, 1.0, 0.0), opacity 0.2s 0.1s linear, scale 0.3s 0.1s cubic-bezier(0.9, 0.3, 0.9, 0.5), top 0.2s 0.2s cubic-bezier(0.6, 1.0, 0.4, 0.0), height 0.1s .4s linear";
       editZoneRef.current.style.scale = 0;
-      //editZoneRef.current.style.height = "369px";
     }
   };
 
   const closeAllTabs = () => {
-    //setColorEditor(false);
-    //setTextEditor(false);
-    //setImageEditor(false);
-
     closeColorEditor();
     closeImageEditor();
     closeTextEditor();
@@ -689,15 +716,11 @@ const ThreeDViewer = () => {
   };
 
   const imageEditorTab = () => {
-    // handleFileUpload()
     setForceClose(false);
     setColorEditor(false);
     setTextEditor(false);
     setImageEditor(true);
-    //editZoneRef.current.style.height = "369px";
     editZoneRefChild.current.style.opacity = "0";
-    //editZoneRef.current.style.transition =
-    //"height 0.5s cubic-bezier(0.1, 0.7, 0.0, 1.0)";
     editZoneRefChild.current.style.transition =
       "opacity 0.1s cubic-bezier(0.1, 0.7, 0.0, 1.0)";
   };
@@ -706,18 +729,7 @@ const ThreeDViewer = () => {
     setForceClose(false);
     setColorEditor(false);
     setTextEditor(true);
-    setImageEditor(false);
 
-    let textBpxNumber = 0;
-
-    /*if (textEditor) {
-      editZoneRef.current.style.height = "302px";
-    } else {
-      editZoneRef.current.style.height = "369px";
-    }*/
-
-    //editZoneRef.current.style.transition =
-    //"all 0.3s 0.2s cubic-bezier(0.1, 0.7, 0.0, 1.0)";
     editZoneRefChild.current.style.opacity = "0";
   };
 
@@ -816,6 +828,13 @@ const ThreeDViewer = () => {
     isDrawingRef.current = isDrawingMode;
   }, [isDrawingMode]);
 
+  const removePathFromCanvas = () => {
+    const selectedPath = fabricCanvas.current.getActiveObject();
+    fabricCanvas.current.remove(selectedPath);
+    fabricCanvas.current.renderAll();
+    updateTexture();
+  };
+
   return (
     <>
       {isLoading && (
@@ -828,62 +847,12 @@ const ThreeDViewer = () => {
           width: "100%",
           height: "100%",
           marginRight: isDrawingMode ? "50%" : 0,
-          //right: isDrawingMode ? "500px" : 0,
-          //transform: "translateX(-25%)",
-          //transformOrigin: "-25% 0",
-          //top: 0,
-          //left: -500,
           transition: "all 0.7s cubic-bezier(0.4, 0.0, 0.6, 1.0)",
-          //position: "relative",
-          //scale: "0.5",
         }}
         ref={containerRef}
       />
       <>
-        <div
-          ref={editZoneRef}
-          className={styles.editZone}
-          style={{
-            //backgroundColor: "#237",
-            height: textEditor
-              ? !activeObject
-                ? 50 +
-                  56 *
-                    fabricCanvas.current._objects.filter(
-                      (obj) => obj instanceof fabric.Textbox
-                    ).length
-                : 300
-              : imageEditor
-              ? !activeObject
-                ? 60 +
-                  103.7 *
-                    Math.floor(
-                      (fabricCanvas.current._objects.filter(
-                        (obj) => obj instanceof fabric.Image
-                      ).length +
-                        2) /
-                        3
-                    )
-                : 292
-              : colorEditor
-              ? 292
-              : editZoneRef.current &&
-                editZoneRef.current.children[1] &&
-                editZoneRef.current.children[1].children[0] &&
-                editZoneRef.current.children[1].children[0].children &&
-                editZoneRef.current.children[1].children[0].children.length
-              ? `${
-                  100 +
-                  70 *
-                    (editZoneRef.current.children[1].children[0].children
-                      .length -
-                      1)
-                }px`
-              : 0,
-            maxHeight: "70vh",
-            //backgroundColor: "#309",
-          }}
-        >
+        <div ref={editZoneRef} className={styles.editZone} style={editorStyle}>
           <div className={styles.nameZone}>
             <button onClick={closeEditor} className={styles.fileUploadLabeal}>
               <p
@@ -1073,11 +1042,10 @@ const ThreeDViewer = () => {
         <div
           style={{
             opacity: isDrawingMode ? 1 : 0,
-            right: isDrawingMode ? `-100px` : windowWidth < 750 ? -750 : 10000,
+            right: isDrawingMode ? `-80px` : windowWidth < 750 ? 0 : 10000,
             transitionDelay: isDrawingMode ? "2.05s" : "0s",
             width: canvasSize,
             height: canvasSize,
-            marginTop: 15,
             zIndex:
               windowWidth < 750
                 ? !isDrawingMode
@@ -1085,8 +1053,6 @@ const ThreeDViewer = () => {
                   : 10000000000
                 : 10000000000,
             transform: `scale(${drawCanvasSize})`,
-            boxShadow: "0 0 20px 1px rgba(0,0,0,0.05)",
-            borderRadius: "50px",
           }}
           ref={fabricCanvasRef}
           className={styles.canvasDrawingContainer}
@@ -1096,7 +1062,6 @@ const ThreeDViewer = () => {
               id="fabric-canvas"
               className={styles.canvasDrawing}
               style={{
-                //transform: `scale(${drawCanvasSize})`,
                 width: "100%",
                 transformOrigin: "top left",
                 borderRadius: "50px",
@@ -1107,7 +1072,6 @@ const ThreeDViewer = () => {
 
         {isDrawingMode && (
           <>
-            {/* <div className={styles.paintingBoardFakeSolution}></div> */}
             <div className={styles.paintingBoard}>
               <div className={styles.headerOptions}>
                 <h1
@@ -1165,6 +1129,7 @@ const ThreeDViewer = () => {
                       />
                     ))}
                   </div>
+                  <div onClick={removePathFromCanvas}>delete</div>
                 </div>
               </div>
               <div style={{ height: 50 }}></div>
