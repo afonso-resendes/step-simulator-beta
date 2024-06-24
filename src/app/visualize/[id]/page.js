@@ -195,6 +195,7 @@ const Visualize = ({ params }) => {
                   );
 
                   newTexture.flipY = false;
+                  newTexture.colorSpace = THREE.SRGBColorSpace;
                   mesh.current.material.map = newTexture;
                   mesh.current.material.map.needsUpdate = true;
                 } catch (error) {
