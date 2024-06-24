@@ -52,7 +52,7 @@ const Visualize = ({ params }) => {
         return;
       }
       sceneDataArray.forEach((sceneData, index) => {
-        const { width, height, backgroundColor, texts, images, part } =
+        const { width, height, backgroundColor, texts, images, paths, part } =
           sceneData;
 
         const canvas = new fabric.Canvas(`${part}`, {
@@ -137,6 +137,38 @@ const Visualize = ({ params }) => {
                   { crossOrigin: "anonymous" } // Add crossOrigin to handle CORS if needed
                 );
               }
+            }
+          );
+        }
+
+        if (paths && paths.length > 1) {
+          paths.forEach(
+            async ({
+              path,
+              left,
+              top,
+              fill,
+              stroke,
+              strokeWidth,
+              strokeLineCap,
+              strokeLineJoin,
+              strokeDashArray,
+            }) => {
+              let newPath = new fabric.Path(path);
+              newPath.set({
+                left,
+                top,
+                fill,
+                stroke,
+                strokeWidth,
+                strokeLineCap,
+                strokeLineJoin,
+                strokeDashArray,
+                originX: "center",
+                originY: "center",
+              });
+
+              canvas.add(newPath);
             }
           );
         }

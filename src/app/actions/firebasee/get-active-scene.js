@@ -73,6 +73,7 @@ const getFabricData = async (setAllCanvasData, sceneRef) => {
       backgroundColor: canvas.backgroundColor,
       texts: [],
       images: [],
+      paths: [],
       part: canvas.part,
     };
 
@@ -124,6 +125,18 @@ const getFabricData = async (setAllCanvasData, sceneRef) => {
         } catch (error) {
           console.error("Error uploading image:", error);
         }
+      } else if (obj instanceof fabric.Path) {
+        canvasData.paths.push({
+          path: obj.path,
+          left: obj.left,
+          top: obj.top,
+          fill: obj.fill,
+          stroke: obj.stroke,
+          strokeWidth: obj.strokeWidth,
+          strokeLineCap: obj.strokeLineCap,
+          strokeLineJoin: obj.strokeLineJoin,
+          strokeDashArray: obj.strokeDashArray,
+        });
       }
     }
 
