@@ -334,7 +334,9 @@ const ImageEditor = forwardRef(
                       3
                   )
               : 150
-            : 292,
+            : window.innerHeight > 715
+            ? 292
+            : 150,
           opacity: 0,
           maxHeight: "70vh",
           maskImage:

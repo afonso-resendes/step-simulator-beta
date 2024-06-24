@@ -11,7 +11,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
 
   return (
-    <div>
+    <div style={{ overflow: "hidden" }}>
       <Head>
         <title>Allkits Simulator</title>
         {/* <meta name="description" content="Your 3D Sweat Design Simulator" /> */}
