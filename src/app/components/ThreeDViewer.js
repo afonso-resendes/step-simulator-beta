@@ -68,6 +68,7 @@ import { getActiveScene } from "../actions/firebasee/get-active-scene";
 import { sendData } from "../actions/firebasee/send-data";
 import { scaleRotateMove } from "../actions/canvas/scale-rotate-move-new";
 import { colors } from "../assets/colors";
+import { CenteredPencilBrush, CenteredSprayBrush } from "../classes/brush";
 
 const ThreeDViewer = () => {
   //VARIABLES//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -112,7 +113,7 @@ const ThreeDViewer = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [preview, setPreview] = useState(false);
   const [inputImage, setInputImage] = useState("");
-  const [drawCanvasSize, setDrawCanvasSize] = useState(null);
+  let drawCanvasSize = useRef(null);
   let activeObjectRef = useRef(null);
 
   const editZoneRef = useRef(null);
@@ -251,10 +252,10 @@ const ThreeDViewer = () => {
 
     switch (type) {
       case "pencil":
-        newBrush = new fabric.PencilBrush(fabricCanvas.current);
+        newBrush = new CenteredPencilBrush(fabricCanvas.current);
         break;
       case "spray":
-        newBrush = new fabric.SprayBrush(fabricCanvas.current);
+        newBrush = new CenteredSprayBrush(fabricCanvas.current);
         break;
       case "cursor":
         // Assuming 'cursor' means to toggle off drawing mode
@@ -288,11 +289,15 @@ const ThreeDViewer = () => {
     const isSafari = /Safari/.test(userAgent) && !isChrome;
 
     if (isSafari) {
-      setCanvasSize(1024);
-      setDrawCanvasSize((window.innerWidth * 0.4) / 480);
+      setCanvasSize(512);
+      if (window.innerWidth > 715) {
+        drawCanvasSize.current = (window.innerWidth * 0.4) / 512;
+      } else drawCanvasSize.current = window.innerWidth / 512;
     } else {
       setCanvasSize(1024);
-      setDrawCanvasSize((window.innerWidth * 0.4) / 1024);
+      if (window.innerWidth > 715) {
+        drawCanvasSize.current = (window.innerWidth * 0.4) / 1024;
+      } else drawCanvasSize.current = window.innerWidth / 1024;
     }
 
     const updateWindowWidth = () => {
@@ -354,6 +359,8 @@ const ThreeDViewer = () => {
   useEffect(() => {
     if (!fabricTexture) return;
 
+    console.log(drawCanvasSize);
+
     //CREATE SCENE
     const sceneLayout = createSceneLayout();
     const scene = sceneLayout.scene;
@@ -404,7 +411,11 @@ const ThreeDViewer = () => {
           );
 
       fabricCanvasRef.current.style.transitionDelay = "0s";
-      setDrawCanvasSize((window.innerWidth * 0.4) / canvasSize);
+
+      drawCanvasSize.current =
+        window.innerWidth > 715
+          ? (window.innerWidth * 0.4) / canvasSize
+          : window.innerWidth / canvasSize;
       setWindowHeight(window.innerHeight);
       setWindowWidth(window.innerWidth);
     }
@@ -531,7 +542,7 @@ const ThreeDViewer = () => {
             closeAllTabs();
           }, 100);
         }
-        openEditor();
+        if (!isDrawingRef.current) openEditor();
         //}, 10);
 
         //NÃO INTERSETA
@@ -546,14 +557,12 @@ const ThreeDViewer = () => {
             canvasSize
           );
         closeEditor();
-        //setTimeout(() => {
         if (!isDrawingRef.current) {
           editingComponent.current = null;
           fabricCanvas.current.discardActiveObject();
           setActiveObject(null);
           fabricCanvas.current.renderAll();
         }
-        //}, 10);
         setShowEditZone(false);
 
         editZoneRefChild.current.style.opacity = "1";
@@ -645,6 +654,20 @@ const ThreeDViewer = () => {
     });
 
     fabricCanvas.current.on("mouse:up", () => {
+      fabricCanvas.current.renderAll();
+      updateTexture();
+    });
+    fabricCanvas.current.on("path:created", (e) => {
+      /*const newLeft = e.path.left + (e.path.width * e.path.scaleX) / 2;
+      const newTop = e.path.top + (e.path.height * e.path.scaleY) / 2;
+      e.path.set({
+        originX: "center",
+        originY: "center",
+        left: newLeft,
+        top: newTop,
+      });*/
+      setActiveObject(e.path);
+      fabricCanvas.current.setActiveObject(e.path);
       fabricCanvas.current.renderAll();
       updateTexture();
     });
@@ -1055,8 +1078,14 @@ const ThreeDViewer = () => {
 
         <div
           style={{
-            opacity: isDrawingMode ? 1 : 0,
-            right: isDrawingMode ? `-80px` : windowWidth < 750 ? 0 : 10000,
+            opacity: isDrawingMode ? 1 : 1,
+            /*right: isDrawingMode
+              ? windowWidth < 750
+                ? 0
+                : `-80px`
+              : windowWidth < 750
+              ? 0
+              : 10000,*/
             transitionDelay: isDrawingMode ? "2.05s" : "0s",
             width: canvasSize,
             height: canvasSize,
@@ -1066,7 +1095,17 @@ const ThreeDViewer = () => {
                   ? -1
                   : 10000000000
                 : 10000000000,
-            transform: `scale(${drawCanvasSize})`,
+            transform:
+              windowWidth > 715
+                ? windowWidth > 900
+                  ? `scale(${drawCanvasSize.current})`
+                  : `scale(${drawCanvasSize.current * 0.8})`
+                : `scale(${(windowWidth * 0.95) / canvasSize})`,
+            marginLeft: isDrawingMode
+              ? windowWidth > 715
+                ? "56.5vw"
+                : 0
+              : "10000px",
           }}
           ref={fabricCanvasRef}
           className={styles.canvasDrawingContainer}
@@ -1077,8 +1116,6 @@ const ThreeDViewer = () => {
               className={styles.canvasDrawing}
               style={{
                 width: "100%",
-                transformOrigin: "top left",
-                borderRadius: "50px",
               }}
             />
           }
