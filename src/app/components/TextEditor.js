@@ -38,6 +38,7 @@ const TextEditor = forwardRef(
       forceClose,
       setActiveObject,
       canvasSize,
+      setActiveText,
     },
     ref
   ) => {
@@ -53,7 +54,9 @@ const TextEditor = forwardRef(
     const [textBoxes, setTextBoxes] = useState([]);
     const editZoneRefText = useRef(null);
     const textAreaRef = useRef(null);
+    const textZoneRef = useRef(null);
     let previousTextAreaHeight;
+    const textsList = useRef(null);
 
     const [windowHeightAdjust, setWindowHeightAdjust] = useState(false);
 
@@ -142,6 +145,9 @@ const TextEditor = forwardRef(
 
     const handleAddTextBox = (text) => {
       addTextbox(text);
+      setTimeout(() => {
+        setText("");
+      }, 50);
     };
 
     const handleClose = () => {
@@ -173,6 +179,9 @@ const TextEditor = forwardRef(
           setFillColor(activeObject.fill || "#000000");
           setFontFamily(activeObject.fontFamily);
           setTextAlign(activeObject.textAlign);
+          setTimeout(() => {
+            textZoneRef.current.style.opacity = 1;
+          }, 100);
         } else {
           setText("");
           setFontSize(35);
@@ -209,7 +218,7 @@ const TextEditor = forwardRef(
         });
 
         if (add) {
-          handleAddTextBox("Seu texto aqui");
+          handleAddTextBox("O seu texto");
         } else {
           setDisplayTexts(true);
           //const newHeight = 100 + textboxNumber * 120;
@@ -225,6 +234,7 @@ const TextEditor = forwardRef(
         editZoneRefText.current.style.transition =
           "opacity 0.2s cubic-bezier(0.1, 0.1, 0.0, 1.0), scale 0.6s 0.2s cubic-bezier(0.4, 0.7, 0.0, 1.0)";
         editZoneRefChild.current.style.opacity = 1;
+        textZoneRef.current.style.opacity = 0;
       }
     }, [forceClose]);
 
@@ -243,6 +253,7 @@ const TextEditor = forwardRef(
           //editZoneRefText.current.style.height = newHeight + "px";
         }
       }
+      setActiveText(text);
     }, [text, windowHeightAdjust]);
 
     return (
@@ -250,12 +261,20 @@ const TextEditor = forwardRef(
         // style={{ height: heightWindow, opacity: 0 }}
         style={{
           height: !activeObject
-            ? 50 +
-              56 *
-                fabricCanvas.current._objects.filter(
-                  (obj) => obj instanceof fabric.Textbox
-                ).length
-            : 300,
+            ? window.innerWidth > 715
+              ? 50 +
+                56 *
+                  fabricCanvas.current._objects.filter(
+                    (obj) => obj instanceof fabric.Textbox
+                  ).length
+              : 50 +
+                56 *
+                  fabricCanvas.current._objects.filter(
+                    (obj) => obj instanceof fabric.Textbox
+                  ).length
+            : window.innerWidth > 715
+            ? 300 + (text.split("\n").length * 35) / 2
+            : 150 + (text.split("\n").length * 35) / 2,
           maskImage:
             !activeObject &&
             "linear-gradient(to bottom, white 85%, transparent 98%)",
@@ -282,6 +301,19 @@ const TextEditor = forwardRef(
             onClick={() => {
               //editZoneRef.current.style.height = "369px";
               if (activeObject) {
+                if (
+                  activeObject.text == "O seu texto" ||
+                  activeObject.text == ""
+                ) {
+                  fabricCanvas.current.remove(activeObject);
+                }
+                let isThereAnyTextbox = false;
+                fabricCanvas.current._objects.forEach((obj) => {
+                  if (obj instanceof fabric.Textbox) isThereAnyTextbox = true;
+                });
+                if (!isThereAnyTextbox) {
+                  closeTabs();
+                }
                 setActiveObject(null);
                 fabricCanvas.current.discardActiveObject();
                 fabricCanvas.current.renderAll();
@@ -305,7 +337,7 @@ const TextEditor = forwardRef(
           <p className={styles.trititle}>Editar Texto</p>
           {fabricCanvas.current && (
             <label
-              onClick={() => handleAddTextBox("Seu texto aqui")}
+              onClick={() => handleAddTextBox("O seu texto")}
               className={styles.fileUploadLabealAdd}
             >
               <p
@@ -325,7 +357,14 @@ const TextEditor = forwardRef(
 
         {activeObject && activeObject instanceof fabric.Textbox ? (
           <>
-            <div className={styles.bottomWindowText}>
+            <div
+              className={styles.bottomWindowText}
+              style={{
+                opacity: 0,
+                transition: "opacity .3s cubic-bezier(0,.1,.7,1)",
+              }}
+              ref={textZoneRef}
+            >
               <div
                 style={{
                   display: "flex",
@@ -334,10 +373,14 @@ const TextEditor = forwardRef(
                 }}
                 className={styles.input_Trash}
               >
-                <input
+                <textarea
                   placeholder="O seu texto"
                   className={styles.inputText}
-                  style={{ width: "90%" }}
+                  style={{
+                    width: "90%",
+                    height: 17 + (text.split("\n").length * 35) / 2,
+                    overflowY: "scroll",
+                  }}
                   value={text}
                   onChange={handleTextChange}
                   //ref={textAreaRef}
@@ -526,7 +569,7 @@ const TextEditor = forwardRef(
             </div>
           </>
         ) : (
-          <div className={styles.noText}>
+          <div className={styles.noText} ref={textsList}>
             {fabricCanvas.current._objects.map((obj, index) => {
               /*editZoneRef.current.style.height =
                 fabricCanvas.current._objects.filter(

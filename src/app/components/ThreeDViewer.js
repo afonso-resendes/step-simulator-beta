@@ -104,6 +104,7 @@ const ThreeDViewer = () => {
   let originalOCoords = useRef(null);
   let textBoxWidth;
   let initialAngle;
+  const [activeText, setActiveText] = useState("");
 
   //CONTROL
   const [escolheBtn, setEscolheBtn] = useState(false);
@@ -112,7 +113,7 @@ const ThreeDViewer = () => {
   const [preview, setPreview] = useState(false);
   const [inputImage, setInputImage] = useState("");
   const [drawCanvasSize, setDrawCanvasSize] = useState(null);
-  let isDrawing = false;
+  let activeObjectRef = useRef(null);
 
   const editZoneRef = useRef(null);
   const editZoneRefChild = useRef(null);
@@ -173,12 +174,20 @@ const ThreeDViewer = () => {
   let editorStyle = {
     height: textEditor
       ? !activeObject
-        ? 50 +
-          56 *
-            fabricCanvas.current._objects.filter(
-              (obj) => obj instanceof fabric.Textbox
-            ).length
-        : 300
+        ? window.innerWidth > 715
+          ? 50 +
+            56 *
+              fabricCanvas.current._objects.filter(
+                (obj) => obj instanceof fabric.Textbox
+              ).length
+          : 50 +
+            56 *
+              fabricCanvas.current._objects.filter(
+                (obj) => obj instanceof fabric.Textbox
+              ).length
+        : window.innerWidth > 715
+        ? 300 + (activeText.split("\n").length * 35) / 2
+        : 150 + (activeText.split("\n").length * 35) / 2
       : imageEditor
       ? !activeObject
         ? 60 +
@@ -190,7 +199,7 @@ const ThreeDViewer = () => {
                 2) /
                 3
             )
-        : 292
+        : 300
       : colorEditor
       ? 292
       : editZoneRef.current &&
@@ -510,13 +519,15 @@ const ThreeDViewer = () => {
           if (selectedObject instanceof fabric.Image) {
             imageEditorTab();
           } else if (selectedObject instanceof fabric.Textbox) {
-            textEditorTab();
+            setTimeout(() => {
+              textEditorTab();
+            }, 800);
           }
         } else {
-          setActiveObject(null);
-          editZoneRefChild.current.style.opacity = "1";
-          setForceClose(true);
           setTimeout(() => {
+            setActiveObject(null);
+            editZoneRefChild.current.style.opacity = "1";
+            setForceClose(true);
             closeAllTabs();
           }, 100);
         }
@@ -656,6 +667,11 @@ const ThreeDViewer = () => {
     };
   }, [escolheBtn]);
 
+  useEffect(() => {
+    activeObjectRef.current = activeObject;
+    console.log(activeObject);
+  }, [activeObject]);
+
   //FUNCTIONS///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   const updateTexture = () => {
     if (fabricTexture) fabricTexture.needsUpdate = true;
@@ -725,7 +741,9 @@ const ThreeDViewer = () => {
   const textEditorTab = () => {
     setForceClose(false);
     setColorEditor(false);
-    setTextEditor(true);
+    setTimeout(() => {
+      setTextEditor(true);
+    }, 50);
 
     editZoneRefChild.current.style.opacity = "0";
   };
@@ -981,7 +999,6 @@ const ThreeDViewer = () => {
                       <button
                         onClick={() => {
                           setIsDrawingMode(true);
-                          isDrawing = true;
                           closeEditor();
                         }}
                         className={styles.divAreaEspecifica}
@@ -1074,7 +1091,6 @@ const ThreeDViewer = () => {
                 <h1
                   onClick={() => {
                     setIsDrawingMode(false);
-                    isDrawing = false;
                   }}
                   className={styles.xIcon}
                 >
@@ -1170,7 +1186,6 @@ const ThreeDViewer = () => {
               <button
                 onClick={() => {
                   setIsDrawingMode(true);
-                  isDrawing = true;
                   closeEditor();
                 }}
               >
@@ -1304,6 +1319,7 @@ const ThreeDViewer = () => {
           forceClose={forceClose}
           setActiveObject={setActiveObject}
           canvasSize={canvasSize}
+          setActiveText={setActiveText}
         />
       )}
 

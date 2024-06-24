@@ -27,6 +27,7 @@
     z-index: 100000;
     position: absolute;
     width: 311;
+    transition: all 0.3s cubic-bezier(0.1, 0.7, 0, 1);
   }
 
   .nameZone {
@@ -96,6 +97,7 @@
 
   .bottomWindowText {
     margin-top: 75px;
+    transition: heigth 03s cubic-bezier(0, 0.1, 0.7, 1);
   }
 
   .inputText {
@@ -111,11 +113,15 @@
     letter-spacing: -0.8px;
     resize: none;
     -webkit-text-size-adjust: 100%; /* Prevent font scaling in WebKit browsers */
-    max-height: 200px;
+    max-height: 42vh;
     min-height: 14px;
     height: auto;
     overflow: hidden;
     box-sizing: border-box;
+  }
+
+  .inputText::-webkit-scrollbar {
+    display: none; /* Hide scrollbar in WebKit browsers */
   }
 
   .inputText:focus {
@@ -203,6 +209,8 @@
     align-self: center;
     overflow-y: visible;
     height: 250px;
+    transition: all 0.3s cubic-bezier(0, 0.1, 0.7, 1);
+
     /*mask-image: linear-gradient(
       to bottom,
       transparent,

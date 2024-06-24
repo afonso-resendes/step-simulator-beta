@@ -323,22 +323,24 @@ const ImageEditor = forwardRef(
       <div
         style={{
           height: !activeObject
-            ? 65 +
-              103.7 *
-                Math.floor(
-                  (fabricCanvas.current._objects.filter(
-                    (obj) => obj instanceof fabric.Image
-                  ).length +
-                    2) /
-                    3
-                )
+            ? window.innerHeight > 715
+              ? 65 +
+                103.7 *
+                  Math.floor(
+                    (fabricCanvas.current._objects.filter(
+                      (obj) => obj instanceof fabric.Image
+                    ).length +
+                      2) /
+                      3
+                  )
+              : 150
             : 292,
           opacity: 0,
           maxHeight: "70vh",
-
           maskImage:
-            !activeObject &&
-            "linear-gradient(to bottom, white 85%, transparent 98%)",
+            !activeObject && window.innerHeight > 715
+              ? "linear-gradient(to bottom, white 85%, transparent 98%)"
+              : "linear-gradient(to right, white 85%, transparent 98%) linear-gradient(to left, white 85%, transparent 98%)",
           maskSize: !activeObject && "100% 100%",
         }}
         ref={editZoneImgRef}
@@ -543,7 +545,8 @@ const ImageEditor = forwardRef(
                               3
                           )
                         : 240
-                      : 90,
+                      : 100,
+                  width: window.innerWidth > 715 ? "auto" : "100vw",
                 }}
                 className={styles.imageList}
               >
