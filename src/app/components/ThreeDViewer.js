@@ -106,6 +106,7 @@ const ThreeDViewer = () => {
   let textBoxWidth;
   let initialAngle;
   const [activeText, setActiveText] = useState("");
+  let lastPath = useRef(null);
 
   //CONTROL
   const [escolheBtn, setEscolheBtn] = useState(false);
@@ -653,21 +654,9 @@ const ThreeDViewer = () => {
       passive: true,
     });
 
-    fabricCanvas.current.on("mouse:up", () => {
-      fabricCanvas.current.renderAll();
-      updateTexture();
-    });
     fabricCanvas.current.on("path:created", (e) => {
-      /*const newLeft = e.path.left + (e.path.width * e.path.scaleX) / 2;
-      const newTop = e.path.top + (e.path.height * e.path.scaleY) / 2;
-      e.path.set({
-        originX: "center",
-        originY: "center",
-        left: newLeft,
-        top: newTop,
-      });*/
+      lastPath.current = e.path;
       setActiveObject(e.path);
-      fabricCanvas.current.setActiveObject(e.path);
       fabricCanvas.current.renderAll();
       updateTexture();
     });
@@ -867,8 +856,13 @@ const ThreeDViewer = () => {
   }, [isDrawingMode]);
 
   const removePathFromCanvas = () => {
-    const selectedPath = fabricCanvas.current.getActiveObject();
-    fabricCanvas.current.remove(selectedPath);
+    const selectedPaths = fabricCanvas.current.getActiveObjects();
+    if (selectedPaths.length > 1) {
+      selectedPaths.forEach((path) => {
+        fabricCanvas.current.remove(path);
+      });
+    } else fabricCanvas.current.remove(lastPath.current);
+
     fabricCanvas.current.renderAll();
     updateTexture();
   };
