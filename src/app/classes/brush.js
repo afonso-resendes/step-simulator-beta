@@ -1,3 +1,5 @@
+import { fabric } from "fabric";
+
 export class CenteredPencilBrush extends fabric.PencilBrush {
   constructor(canvas) {
     super(canvas);

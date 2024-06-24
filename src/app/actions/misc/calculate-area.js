@@ -50,7 +50,7 @@ export function calculateArea(sceneRef, setAnimatedPrice) {
 
     finalPrintCanvas.clear();
 
-    canvas.renderAll();
+    //canvas.renderAll();
 
     copyCanvasWOBG(canvas, finalPrintCanvas);
 

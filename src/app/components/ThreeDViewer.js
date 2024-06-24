@@ -114,7 +114,7 @@ const ThreeDViewer = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [preview, setPreview] = useState(false);
   const [inputImage, setInputImage] = useState("");
-  let drawCanvasSize = useRef(null);
+  const [drawCanvasSize, setDrawCanvasSize] = useState(0);
   let activeObjectRef = useRef(null);
 
   const editZoneRef = useRef(null);
@@ -292,13 +292,13 @@ const ThreeDViewer = () => {
     if (isSafari) {
       setCanvasSize(512);
       if (window.innerWidth > 715) {
-        drawCanvasSize.current = (window.innerWidth * 0.4) / 512;
-      } else drawCanvasSize.current = window.innerWidth / 512;
+        setDrawCanvasSize((window.innerWidth * 0.4) / 512);
+      } else setDrawCanvasSize(window.innerWidth / 512);
     } else {
       setCanvasSize(1024);
       if (window.innerWidth > 715) {
-        drawCanvasSize.current = (window.innerWidth * 0.4) / 1024;
-      } else drawCanvasSize.current = window.innerWidth / 1024;
+        setDrawCanvasSize((window.innerWidth * 0.4) / 1024);
+      } else setDrawCanvasSize(window.innerWidth / 1024);
     }
 
     const updateWindowWidth = () => {
@@ -413,10 +413,11 @@ const ThreeDViewer = () => {
 
       fabricCanvasRef.current.style.transitionDelay = "0s";
 
-      drawCanvasSize.current =
+      setDrawCanvasSize(
         window.innerWidth > 715
           ? (window.innerWidth * 0.4) / canvasSize
-          : window.innerWidth / canvasSize;
+          : window.innerWidth / canvasSize
+      );
       setWindowHeight(window.innerHeight);
       setWindowWidth(window.innerWidth);
     }
@@ -1092,8 +1093,8 @@ const ThreeDViewer = () => {
             transform:
               windowWidth > 715
                 ? windowWidth > 900
-                  ? `scale(${drawCanvasSize.current})`
-                  : `scale(${drawCanvasSize.current * 0.8})`
+                  ? `scale(${drawCanvasSize})`
+                  : `scale(${drawCanvasSize * 0.8})`
                 : `scale(${(windowWidth * 0.95) / canvasSize})`,
             marginLeft: isDrawingMode
               ? windowWidth > 715
@@ -1104,15 +1105,13 @@ const ThreeDViewer = () => {
           ref={fabricCanvasRef}
           className={styles.canvasDrawingContainer}
         >
-          {
-            <canvas
-              id="fabric-canvas"
-              className={styles.canvasDrawing}
-              style={{
-                width: "100%",
-              }}
-            />
-          }
+          <canvas
+            id="fabric-canvas"
+            className={styles.canvasDrawing}
+            style={{
+              width: "100%",
+            }}
+          />
         </div>
 
         {isDrawingMode && (
@@ -1250,6 +1249,14 @@ const ThreeDViewer = () => {
           <div className={styles.exportBtnNot}>
             <button
               onClick={() => {
+                if (editingComponent.current) {
+                  storeCanvasAndTexture(
+                    editingComponent,
+                    fabricCanvas.current,
+                    canvasSize
+                  );
+                }
+                setIsDrawingMode(false);
                 getActiveScene(
                   setDocId,
                   setAllCanvasData,
