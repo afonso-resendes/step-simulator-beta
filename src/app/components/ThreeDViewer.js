@@ -321,8 +321,9 @@ const ThreeDViewer = () => {
       backgroundColor: "#fff",
     });
 
-    fabricCanvas.current.freeDrawingBrush.color = "black";
+    fabricCanvas.current.freeDrawingBrush.color = "#000000";
     fabricCanvas.current.freeDrawingBrush.width = 10;
+    fabricCanvas.current.perPixelTargetFind = true;
 
     const texture = new THREE.CanvasTexture(fabricCanvas.current.lowerCanvasEl);
     texture.flipY = false;
@@ -482,70 +483,66 @@ const ThreeDViewer = () => {
           );
         }
 
-        let openEd = true;
-        setTimeout(() => {
-          selectImageResult = selectImage(
-            intersectionResult,
-            previousUVCursor,
-            previousMouse,
-            fabricCanvas,
-            objectRotation,
-            initialUVCursor,
-            updateTexture,
-            canvasSize,
-            originalLeft,
-            originalTop,
-            originalOCoords
-          );
-          const selectedObject = fabricCanvas.current.getActiveObject();
+        //setTimeout(() => {
+        selectImageResult = selectImage(
+          intersectionResult,
+          previousUVCursor,
+          previousMouse,
+          fabricCanvas,
+          objectRotation,
+          initialUVCursor,
+          updateTexture,
+          canvasSize,
+          originalLeft,
+          originalTop,
+          originalOCoords
+        );
+        const selectedObject = fabricCanvas.current.getActiveObject();
 
-          if (selectedObject) {
-            isDragging = true;
-            orbit.enabled = false;
-            objectRotation.current = selectedObject.angle;
-            initialAngle = selectedObject.angle;
-            setActiveObject(selectedObject);
-            textBoxWidth = selectedObject.width;
+        if (selectedObject) {
+          isDragging = true;
+          orbit.enabled = false;
+          objectRotation.current = selectedObject.angle;
+          initialAngle = selectedObject.angle;
+          setActiveObject(selectedObject);
+          textBoxWidth = selectedObject.width;
 
-            if (selectedObject instanceof fabric.Image) {
-              imageEditorTab();
-            } else if (selectedObject instanceof fabric.Textbox) {
-              textEditorTab();
-            } else if (selectedObject instanceof fabric.Path) {
-              openEd = false;
-              setIsDrawingMode(true);
-            }
-          } else {
-            setActiveObject(null);
-            editZoneRefChild.current.style.opacity = "1";
-            setForceClose(true);
-            setTimeout(() => {
-              closeAllTabs();
-            }, 100);
+          if (selectedObject instanceof fabric.Image) {
+            imageEditorTab();
+          } else if (selectedObject instanceof fabric.Textbox) {
+            textEditorTab();
           }
-          if (openEd) openEditor();
-        }, 10);
+        } else {
+          setActiveObject(null);
+          editZoneRefChild.current.style.opacity = "1";
+          setForceClose(true);
+          setTimeout(() => {
+            closeAllTabs();
+          }, 100);
+        }
+        openEditor();
+        //}, 10);
 
         //NÃO INTERSETA
       } else {
         selectedMesh.current = !isDrawingRef.current
           ? null
           : editingComponent.current;
-        if (editingComponent.current)
+        if (editingComponent.current && !isDrawingRef.current)
           storeCanvasAndTexture(
             editingComponent,
             fabricCanvas.current,
             canvasSize
           );
         closeEditor();
-        setTimeout(() => {
-          if (!isDrawingRef.current) {
-            editingComponent.current = null;
-            fabricCanvas.current.discardActiveObject();
-            setActiveObject(null);
-            fabricCanvas.current.renderAll();
-          }
-        }, 10);
+        //setTimeout(() => {
+        if (!isDrawingRef.current) {
+          editingComponent.current = null;
+          fabricCanvas.current.discardActiveObject();
+          setActiveObject(null);
+          fabricCanvas.current.renderAll();
+        }
+        //}, 10);
         setShowEditZone(false);
 
         editZoneRefChild.current.style.opacity = "1";

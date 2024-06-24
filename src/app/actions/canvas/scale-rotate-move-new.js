@@ -64,6 +64,17 @@ export function scaleRotateMove(
       editingComponent.current,
       currentMouse
     )[0];
+    console.log(
+      "puuuu",
+      getIntersection(
+        raycaster,
+        camera,
+        editingComponent.current,
+        currentMouse
+      ),
+      "kjkjkjkj",
+      offsetX
+    );
   }
 
   const activeObject = fabricCanvas.current.getActiveObject();
@@ -483,7 +494,10 @@ export function scaleRotateMove(
 
       if (selectedHandle != "mtr") {
         console.log("ksjadb");
-        if (activeObject instanceof fabric.Image) {
+        if (
+          activeObject instanceof fabric.Image ||
+          activeObject instanceof fabric.Path
+        ) {
           if (
             distanceFrom(newOCoords.tl, newOCoords.tr) < maxScaleAllowed &&
             distanceFrom(newOCoords.tl, newOCoords.tr) > minScaleAllowed &&
@@ -589,8 +603,8 @@ export function scaleRotateMove(
         ) {
           activeObject.set({
             left: uCoord,
-            originX: "center",
-            originY: "center",
+            /*originX: "center",
+            originY: "center",*/
           });
         }
         if (
@@ -599,14 +613,17 @@ export function scaleRotateMove(
         ) {
           activeObject.set({
             top: vCoord,
-            originX: "center",
-            originY: "center",
+            /*originX: "center",
+            originY: "center",*/
           });
         }
       }
     }
 
-    if (activeObject instanceof fabric.Image) {
+    if (
+      activeObject instanceof fabric.Image ||
+      activeObject instanceof fabric.Path
+    ) {
       const minSide = Math.min(
         activeObject.width * activeObject.scaleX,
         activeObject.height * activeObject.scaleY
