@@ -179,8 +179,11 @@
     padding-bottom: 11px;
     padding-left: 20px;
     padding-right: 20px;
-    transition: top 0.15s cubic-bezier(0.1, 0.3, 0, 1),
-      transform 0.2s 0.05s cubic-bezier(0.1, 0.5, 0, 1);
+    transition: all 0.15s cubic-bezier(0.1, 0.3, 0, 1);
+    cursor: pointer;
+  }
+
+  .priceBtnMain:hover {
     cursor: pointer;
   }
 
@@ -200,18 +203,10 @@
     display: block;
     margin: auto;
     margin-top: 7px;
-    transition: top 0.15s cubic-bezier(0.1, 0.3, 0, 1),
-      transform 0.2s 0.05s cubic-bezier(0.1, 0.5, 0, 1);
+    transition: all 0.2s ease-in-out;
     font-size: 15px;
     font-weight: 500;
     top: 50px;
-    transform: scale(1);
-  }
-
-  .priceBtn:hover {
-    cursor: pointer;
-    top: 48px;
-    transform: scale(1.16);
   }
 
   .exportBtnNot button {
@@ -408,10 +403,14 @@
     display: flex;
     align-items: center;
     gap: 5px;
-    background-color: rgba(0, 0, 0, 0.2);
+    background: -webkit-linear-gradient(
+      bottom left,
+      rgba(140, 110, 251) 15%,
+      #00bfff
+    );
     cursor: pointer;
     transition: all 0.3s ease-in-out;
-    color: rgba(191, 191, 191, 1);
+    color: #fff;
     align-self: center;
     justify-content: center;
     margin: auto;
@@ -463,14 +462,14 @@
   }
 
   .successOrderText {
-    color: #fff;
-    font-size: 20px;
-    letter-spacing: -0.8px;
+    font-size: 32px;
+    letter-spacing: -1.6px;
     font-family: "Inter";
-    font-weight: 800;
+    font-weight: 500;
     text-align: center;
     margin-left: 25px;
     margin-right: 25px;
+    color: #333;
   }
 
   .successOrderSubText {
@@ -503,8 +502,7 @@
   /* DRAWING */
   .canvasDrawingContainer {
     position: absolute;
-    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.05);
-    border-radius: 50px;
+    border-radius: 5px;
   }
 
   .canvasDrawingContainerTest {
@@ -526,7 +524,7 @@
     justify-content: center;*/
     margin: 0;
     top: 0;
-    border-radius: 25px;
+    border-radius: 5px;
     transform-origin: top left;
   }
 
@@ -704,7 +702,14 @@
     left: 35px;
     top: 35px;
     color: #fff;
-    text-shadow: 0 0 25px rgba(0, 0, 0, 0.25);
+    text-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .xIcon:hover {
+    opacity: 0.5;
+    text-shadow: 0 0 25px rgba(103, 0, 213, 0.778);
   }
 
   .canvasBrushesZone {
@@ -722,7 +727,7 @@
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 10px;
     overflow-y: auto;
   }
 
@@ -734,7 +739,7 @@
     height: 45px;
     border-radius: 15px;
     cursor: pointer;
-    transition: all 0.3s ease-in-out;
+    transition: all 0.2s ease-in-out;
   }
 
   .drawingButton:hover {
@@ -1352,11 +1357,9 @@
   }
 
   .successOrderText {
-    color: #fff;
     font-size: 20px;
     letter-spacing: -0.8px;
     font-family: "Inter";
-    font-weight: 800;
     text-align: center;
     margin-left: 25px;
     margin-right: 25px;

@@ -19,10 +19,8 @@ import desenhaIcon from "@/src/imgs/icons/paint-brush.png";
 import mouse from "@/src/imgs/icons/mouse.png";
 import spray from "@/src/imgs/icons/spray.png";
 import model1 from "@/src/imgs/hoodie-options/3foto.png";
-import model2 from "@/src/imgs/hoodie-options/5foto.png";
-import model3 from "@/src/imgs/hoodie-options/2foto.png";
-import model4 from "@/src/imgs/hoodie-options/4foto.png";
-import model5 from "@/src/imgs/hoodie-options/1foto.png";
+import tshirt from "@/src/imgs/hoodie-options/tshirt.png";
+import arrowBack from "@/src/imgs/hoodie-options/arrowBack.png";
 import buildingIcon from "@/src/imgs/icons/buildingIcon.png";
 import shareIcon from "@/src/imgs/icons/iconShare.png";
 
@@ -258,6 +256,7 @@ const ThreeDViewer = () => {
       case "spray":
         newBrush = new CenteredSprayBrush(fabricCanvas.current);
         break;
+
       case "cursor":
         // Assuming 'cursor' means to toggle off drawing mode
         fabricCanvas.current.isDrawingMode = false;
@@ -375,13 +374,7 @@ const ThreeDViewer = () => {
       model == 1
         ? "/glbs/meshes/hoodie11.glb"
         : model == 2
-        ? "/glbs/meshes/1.glb"
-        : model == 3
-        ? "/glbs/meshes/2.glb"
-        : model == 4
-        ? "/glbs/meshes/3.glb"
-        : model == 5
-        ? "/glbs/meshes/4.glb"
+        ? "/glbs/meshes/tshirtRightPlace.glb"
         : null;
 
     if (model == 1 || model == 2 || model == 3 || model == 4 || model == 5)
@@ -1143,7 +1136,7 @@ const ThreeDViewer = () => {
                     className={styles.drawingButton}
                     onClick={() => setBrushType("cursor")}
                   >
-                    <NextImage alt="Step" width={25} height={25} src={mouse} />
+                    <NextImage alt="Step" width={20} height={20} src={mouse} />
                   </button>
                   <button
                     className={styles.drawingButton}
@@ -1160,8 +1153,20 @@ const ThreeDViewer = () => {
                     className={styles.drawingButton}
                     onClick={() => setBrushType("spray")}
                   >
-                    <NextImage alt="Step" width={25} height={25} src={spray} />
+                    <NextImage alt="Step" width={20} height={20} src={spray} />
                   </button>
+
+                  {/* <button
+                    className={styles.drawingButton}
+                    onClick={removePathFromCanvas}
+                  >
+                    <NextImage
+                      alt="Step"
+                      width={20}
+                      height={20}
+                      src={arrowBack}
+                    />
+                  </button> */}
                   <div className={styles.paleteDeCoresDrawing}>
                     {Object.values(colors).map((color, index) => (
                       <button
@@ -1172,7 +1177,6 @@ const ThreeDViewer = () => {
                       />
                     ))}
                   </div>
-                  <div onClick={removePathFromCanvas}>delete</div>
                 </div>
               </div>
               <div style={{ height: 50 }}></div>
@@ -1377,40 +1381,6 @@ const ThreeDViewer = () => {
               <button
                 className={styles.modeloBtn}
                 onClick={() => {
-                  magicLoading(backgroundMagic, modelos, titleModels);
-                  setTimeout(() => {
-                    setEscolheBtn(true);
-                  }, 800);
-                  setModel("5");
-                }}
-              >
-                <NextImage
-                  src={model5}
-                  className={styles.modelosImgs}
-                  width={150}
-                  height={150}
-                />
-              </button>
-              <button
-                className={styles.modeloBtn}
-                onClick={() => {
-                  setModel("3");
-                  magicLoading(backgroundMagic, modelos, titleModels);
-                  setTimeout(() => {
-                    setEscolheBtn(true);
-                  }, 800);
-                }}
-              >
-                <NextImage
-                  src={model3}
-                  className={styles.modelosImgs}
-                  width={150}
-                  height={150}
-                />
-              </button>
-              <button
-                className={styles.modeloBtn}
-                onClick={() => {
                   setModel("1");
                   magicLoading(backgroundMagic, modelos, titleModels);
                   setTimeout(() => {
@@ -1425,23 +1395,7 @@ const ThreeDViewer = () => {
                   height={150}
                 />
               </button>
-              <button
-                className={styles.modeloBtn}
-                onClick={() => {
-                  setModel("4");
-                  magicLoading(backgroundMagic, modelos, titleModels);
-                  setTimeout(() => {
-                    setEscolheBtn(true);
-                  }, 800);
-                }}
-              >
-                <NextImage
-                  src={model4}
-                  className={styles.modelosImgs}
-                  width={150}
-                  height={150}
-                />
-              </button>
+
               <button
                 className={styles.modeloBtn}
                 onClick={() => {
@@ -1453,7 +1407,7 @@ const ThreeDViewer = () => {
                 }}
               >
                 <NextImage
-                  src={model2}
+                  src={tshirt}
                   className={styles.modelosImgs}
                   width={150}
                   height={150}
@@ -1539,12 +1493,12 @@ const ThreeDViewer = () => {
                 <h1 className={styles.successOrderText}>
                   Personalização submetida com sucesso
                 </h1>
-                <p
+                {/* <p
                   style={{ marginTop: -10, marginBottom: 35 }}
                   className={styles.successOrderSubText}
                 >
                   Iremos entrar em contacto consigo muito brevemente
-                </p>
+                </p> */}
                 <div className={styles.finalBtns}>
                   {docId != "" ? (
                     <button
@@ -1561,13 +1515,6 @@ const ThreeDViewer = () => {
                       <p>A criar o teu link de pré-visualização</p>
                     </button>
                   )}
-                  <Link
-                    className={styles.goToAllkitsBtn}
-                    style={{ textDecoration: "none" }}
-                    href={"https://www.allkits.pt"}
-                  >
-                    Voltar à Allkits
-                  </Link>
                 </div>
               </div>
             </>
