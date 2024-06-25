@@ -159,6 +159,8 @@ const ThreeDViewer = () => {
   const [windowWidth, setWindowWidth] = useState(0);
   const [windowHeight, setWindowHeight] = useState(0);
 
+  let previousDrawnPath = useRef([]);
+
   // Style based on preview state
   const buttonStyle = {
     right: preview
@@ -374,7 +376,7 @@ const ThreeDViewer = () => {
       model == 1
         ? "/glbs/meshes/hoodie11.glb"
         : model == 2
-        ? "/glbs/meshes/tshirtRightPlace.glb"
+        ? "/final-tshirt.glb"
         : null;
 
     if (model == 1 || model == 2 || model == 3 || model == 4 || model == 5)
@@ -650,9 +652,21 @@ const ThreeDViewer = () => {
 
     fabricCanvas.current.on("path:created", (e) => {
       lastPath.current = e.path;
+      let path = e.path;
+      previousDrawnPath.current.push(path);
       setActiveObject(e.path);
       fabricCanvas.current.renderAll();
       updateTexture();
+    });
+
+    document.addEventListener("keydown", function (event) {
+      // Check if 'Ctrl' key is pressed and 'Z' key is pressed
+      if (event.ctrlKey && event.key === "z") {
+        event.preventDefault(); // Prevent the default browser action (optional)
+        // Your code to handle 'Ctrl+Z' here
+
+        if (isDrawingRef.current) undo();
+      }
     });
 
     /*fabricCanvas.current.on("object:modified", (e) => {
@@ -747,7 +761,6 @@ const ThreeDViewer = () => {
       editZoneRef.current.style.opacity = 0;
       editZoneRef.current.style.filter = "blur(25px)";
       editZoneRef.current.style.top = "150px";
-      editZoneRef.current.style.scale = 0;
     }
   };
 
@@ -844,7 +857,8 @@ const ThreeDViewer = () => {
       fontFamily,
       fillColor,
       textAlign,
-      setActiveObject
+      setActiveObject,
+      canvasSize
     );
     fabricCanvas.current.getActiveObject();
   };
@@ -883,15 +897,15 @@ const ThreeDViewer = () => {
   }, [isDrawingMode]);
 
   const undo = () => {
-    const selectedPaths = fabricCanvas.current.getActiveObjects();
-    if (selectedPaths.length > 1) {
-      selectedPaths.forEach((path) => {
-        fabricCanvas.current.remove(path);
-      });
-    } else fabricCanvas.current.remove(lastPath.current);
-
-    fabricCanvas.current.renderAll();
-    updateTexture();
+    if (isDrawingRef) {
+      console.log(previousDrawnPath.current);
+      const lastIndex = previousDrawnPath.current.length - 1;
+      const lastPath = previousDrawnPath.current[lastIndex];
+      previousDrawnPath.current.pop();
+      fabricCanvas.current.remove(lastPath);
+      fabricCanvas.current.renderAll();
+      updateTexture();
+    }
   };
 
   return (
@@ -1161,7 +1175,7 @@ const ThreeDViewer = () => {
                   onChange={(e) => handleBrushSizeChange(e.target.value)}
                 />
 
-                {/* <button onClick={undo}>undo</button> */}
+                <button onClick={undo}>undo</button>
               </div>
               <div className={styles.canvasBrushesZone}>
                 <div className={styles.firstBtns}>

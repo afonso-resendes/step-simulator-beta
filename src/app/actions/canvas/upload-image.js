@@ -32,7 +32,7 @@ export const uploadImage = (
         originY: "center",
         scaleX: scale * 0.5,
         scaleY: scale * 0.5,
-        cornerSize: 25,
+        cornerSize: canvasSize / 30,
         /*fabricImage.width < fabricImage.height
             ? (fabricImage.width * scale) / 10
             : (fabricImage.height * scale) / 10*/ cornerStyle: "circle",
