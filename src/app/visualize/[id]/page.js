@@ -38,6 +38,7 @@ const Visualize = ({ params }) => {
     3: "/glbs/meshes/2.glb",
     4: "/glbs/meshes/3.glb",
     5: "/glbs/meshes/4.glb",
+    6: "/glbs/meshes/tshirtRightPlace.glb",
   };
 
   const url = modelUrls[model] || null;

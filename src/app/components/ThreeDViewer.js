@@ -373,11 +373,18 @@ const ThreeDViewer = () => {
     const url =
       model == 1
         ? "/glbs/meshes/hoodie11.glb"
-        : model == 2
+        : model == 6
         ? "/glbs/meshes/tshirtRightPlace.glb"
         : null;
 
-    if (model == 1 || model == 2 || model == 3 || model == 4 || model == 5)
+    if (
+      model == 1 ||
+      model == 2 ||
+      model == 3 ||
+      model == 4 ||
+      model == 5 ||
+      model == 6
+    )
       loadGLBModel(url, scene, setIsLoading, renderer, () => {});
 
     const animate = () => {
@@ -1432,7 +1439,7 @@ const ThreeDViewer = () => {
               <button
                 className={styles.modeloBtn}
                 onClick={() => {
-                  setModel("2");
+                  setModel("6");
                   magicLoading(backgroundMagic, modelos, titleModels);
                   setTimeout(() => {
                     setEscolheBtn(true);
