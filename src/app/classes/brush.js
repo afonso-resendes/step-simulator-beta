@@ -16,6 +16,9 @@ export class CenteredPencilBrush extends fabric.PencilBrush {
       strokeDashArray: this.strokeDashArray,
       originX: "center",
       originY: "center",
+      cornerColor: "rgba(0, 0, 0, 0.4)",
+      cornerStyle: "circle",
+      transparentCorners: false,
     });
 
     // Reposition path to center
@@ -45,6 +48,9 @@ export class CenteredSprayBrush extends fabric.SprayBrush {
       strokeDashArray: this.strokeDashArray,
       originX: "center",
       originY: "center",
+      cornerColor: "rgba(0, 0, 0, 0.4)",
+      cornerStyle: "circle",
+      transparentCorners: false,
     });
 
     // Reposition path to center

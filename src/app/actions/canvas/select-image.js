@@ -81,15 +81,13 @@ export function selectImage(
   const selectedObject = fabricCanvas.current.getActiveObject();
 
   if (!isImageSelected) {
-    if (selectedObject) {
-    }
     fabricCanvas.current.discardActiveObject();
   } else {
     originalLeft.current = selectedObject.left;
     originalTop.current = selectedObject.top;
     originalOCoords.current = selectedObject.oCoords;
     if (selectedObject instanceof fabric.Image) {
-      const minSide = Math.min(
+      /*const minSide = Math.min(
         selectedObject.width * selectedObject.scaleX,
         selectedObject.height * selectedObject.scaleY
       );
@@ -112,7 +110,7 @@ export function selectImage(
         actionHandler: originalControl.actionHandler,
         withConnection: true,
         actionName: "rotate",
-      });
+      });*/
     } else if (
       selectedObject instanceof fabric.Textbox &&
       selectedObject != previousSelectedObject

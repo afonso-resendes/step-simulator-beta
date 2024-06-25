@@ -655,6 +655,39 @@ const ThreeDViewer = () => {
       updateTexture();
     });
 
+    /*fabricCanvas.current.on("object:modified", (e) => {
+      const activeObj = e.target;
+      if (
+        activeObj instanceof fabric.Image ||
+        activeObj instanceof fabric.Path
+      ) {
+        const minSide = Math.min(
+          activeObj.width * activeObj.scaleX,
+          activeObj.height * activeObj.scaleY
+        );
+        let tolerance = minSide / 10;
+        if (tolerance < canvasSize / 100) tolerance = canvasSize / 100;
+        activeObj.set({
+          cornerSize: tolerance,
+          rotatingPointOffset:
+            (activeObj.height * activeObj.scaleY) / 2 + tolerance,
+        });
+        const originalControl = fabric.Object.prototype.controls.mtr;
+        fabric.Object.prototype.controls.mtr = new fabric.Control({
+          x: 0,
+          y: 0,
+          offsetY:
+            -((activeObj.height * activeObj.scaleY) / 2) -
+            (activeObj.width * activeObj.scaleX +
+              activeObj.height * activeObj.scaleY) /
+              20,
+          actionHandler: originalControl.actionHandler,
+          withConnection: true,
+          actionName: "rotate",
+        });
+      }
+    });*/
+
     return () => {
       renderer.domElement.remove();
       renderer.dispose();
@@ -849,7 +882,7 @@ const ThreeDViewer = () => {
     isDrawingRef.current = isDrawingMode;
   }, [isDrawingMode]);
 
-  const removePathFromCanvas = () => {
+  const undo = () => {
     const selectedPaths = fabricCanvas.current.getActiveObjects();
     if (selectedPaths.length > 1) {
       selectedPaths.forEach((path) => {

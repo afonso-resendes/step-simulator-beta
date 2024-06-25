@@ -620,7 +620,7 @@ export function scaleRotateMove(
       }
     }
 
-    if (
+    /*if (
       activeObject instanceof fabric.Image ||
       activeObject instanceof fabric.Path
     ) {
@@ -646,7 +646,7 @@ export function scaleRotateMove(
         withConnection: true,
         actionName: "rotate",
       });
-    }
+    }*/
 
     previousUVCursor.x = currentUVCursor.x;
     previousUVCursor.y = currentUVCursor.y;

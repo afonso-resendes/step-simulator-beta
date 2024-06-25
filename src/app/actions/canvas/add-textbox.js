@@ -50,7 +50,7 @@ export function addTextbox(
     }
 
     textbox.set({
-      cornerSize: fontSize / 2,
+      cornerSize: 50, //fontSize / 2,
     });
     for (const font of fontList) {
       textbox.set("fontFamily", font);
