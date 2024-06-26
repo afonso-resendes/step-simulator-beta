@@ -31,14 +31,11 @@ const Visualize = ({ params }) => {
   let orbit;
 
   const model = params.id[params.id.length - 1];
+  console.log(model);
 
   const modelUrls = {
     1: "/glbs/meshes/hoodie11.glb",
-    2: "/glbs/meshes/1.glb",
-    3: "/glbs/meshes/2.glb",
-    4: "/glbs/meshes/3.glb",
-    5: "/glbs/meshes/4.glb",
-    6: "/glbs/meshes/tshirtRightPlace.glb",
+    2: "/tshirt.glb",
   };
 
   const url = modelUrls[model] || null;
@@ -243,7 +240,7 @@ const Visualize = ({ params }) => {
         });
 
         animate();
-      }, 8000);
+      }, 3000);
     };
 
     const sceneLayout = createSceneLayout();

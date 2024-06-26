@@ -138,7 +138,8 @@ const getFabricData = async (setAllCanvasData, sceneRef) => {
           pathOffset: obj.pathOffset,
         });
       } else {
-        let objects = [];
+        console.log(obj);
+        /*let objects = [];
         obj._objects.forEach((circle) => {
           let newCircle = {
             width: circle.width,
@@ -150,8 +151,8 @@ const getFabricData = async (setAllCanvasData, sceneRef) => {
           objects.push(newCircle);
         });
         canvasData.pathsWithCircles.push({
-          objects: objects,
-        });
+          path: ,
+        });*/
       }
     }
 
