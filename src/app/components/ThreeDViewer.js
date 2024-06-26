@@ -361,8 +361,6 @@ const ThreeDViewer = () => {
   useEffect(() => {
     if (!fabricTexture) return;
 
-    console.log(drawCanvasSize);
-
     //CREATE SCENE
     const sceneLayout = createSceneLayout();
     const scene = sceneLayout.scene;
@@ -659,6 +657,7 @@ const ThreeDViewer = () => {
 
     fabricCanvas.current.on("path:created", (e) => {
       lastPath.current = e.path;
+      console.log(e.path);
       let path = e.path;
       previousDrawnPath.current.push(path);
       setActiveObject(e.path);
@@ -729,7 +728,6 @@ const ThreeDViewer = () => {
 
   useEffect(() => {
     activeObjectRef.current = activeObject;
-    console.log(activeObject);
   }, [activeObject]);
 
   //FUNCTIONS///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -905,7 +903,6 @@ const ThreeDViewer = () => {
 
   const undo = () => {
     if (isDrawingRef) {
-      console.log(previousDrawnPath.current);
       const lastIndex = previousDrawnPath.current.length - 1;
       const lastPath = previousDrawnPath.current[lastIndex];
       previousDrawnPath.current.pop();

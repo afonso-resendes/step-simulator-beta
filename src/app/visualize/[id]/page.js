@@ -53,8 +53,16 @@ const Visualize = ({ params }) => {
         return;
       }
       sceneDataArray.forEach((sceneData, index) => {
-        const { width, height, backgroundColor, texts, images, paths, part } =
-          sceneData;
+        const {
+          width,
+          height,
+          backgroundColor,
+          texts,
+          images,
+          paths,
+          pathsWithCircles,
+          part,
+        } = sceneData;
 
         const canvas = new fabric.Canvas(`${part}`, {
           width,
@@ -132,7 +140,6 @@ const Visualize = ({ params }) => {
                     });
 
                     canvas.add(img);
-                    console.log(canvas);
                     //canvas.renderAll();
                   },
                   { crossOrigin: "anonymous" } // Add crossOrigin to handle CORS if needed
@@ -142,38 +149,63 @@ const Visualize = ({ params }) => {
           );
         }
 
-        if (paths && paths.length > 1) {
+        if (paths && paths.length >= 1) {
           paths.forEach(
             async ({
               path,
-              left,
-              top,
-              fill,
               stroke,
               strokeWidth,
               strokeLineCap,
               strokeLineJoin,
-              strokeDashArray,
+              left,
+              top,
+              width,
+              height,
+              pathOffset,
+              objects,
             }) => {
               let newPath = new fabric.Path(path);
               newPath.set({
-                left,
-                top,
-                fill,
+                path,
                 stroke,
                 strokeWidth,
                 strokeLineCap,
                 strokeLineJoin,
-                strokeDashArray,
+                left,
+                top,
+                width,
+                height,
+                pathOffset,
+                fill: "transparent",
                 originX: "center",
                 originY: "center",
               });
+
+              console.log(newPath);
 
               canvas.add(newPath);
             }
           );
         }
-        console.log(canvas);
+
+        if (pathsWithCircles && pathsWithCircles.length >= 1) {
+          console.log(pathsWithCircles);
+          pathsWithCircles.forEach(async ({ objects }) => {
+            objects.forEach((circle) => {
+              let newCircle = new fabric.Circle();
+
+              newCircle.set({
+                width: circle.width,
+                height: circle.height,
+                left: circle.left,
+                top: circle.top,
+                fill: circle.fill,
+              });
+
+              canvas.add(newCircle);
+            });
+          });
+        }
         canvas.renderAll();
 
         canvasRefs.current[`${part}`] = canvas;
@@ -186,6 +218,7 @@ const Visualize = ({ params }) => {
               if (Object.keys(canvasRefs.current).includes(meshh.name)) {
                 mesh.current = meshh;
                 const canvas = canvasRefs.current[meshh.name];
+                console.log(canvas);
 
                 canvas._objects.sort((a, b) => a.index - b.index);
                 canvas.renderAll();
@@ -208,7 +241,7 @@ const Visualize = ({ params }) => {
         });
 
         animate();
-      }, 800);
+      }, 8000);
     };
 
     const sceneLayout = createSceneLayout();
