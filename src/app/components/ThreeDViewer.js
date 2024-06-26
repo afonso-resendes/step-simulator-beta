@@ -668,7 +668,7 @@ const ThreeDViewer = () => {
 
     document.addEventListener("keydown", function (event) {
       // Check if 'Ctrl' key is pressed and 'Z' key is pressed
-      if (event.ctrlKey && event.key === "z") {
+      if ((event.ctrlKey || event.metaKey) && event.key === "z") {
         event.preventDefault(); // Prevent the default browser action (optional)
         // Your code to handle 'Ctrl+Z' here
 
