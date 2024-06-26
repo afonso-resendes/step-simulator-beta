@@ -18,7 +18,6 @@ async function getActiveScene(
   sceneRef
 ) {
   const dataL = await getFabricData(setAllCanvasData, sceneRef);
-  console.log("EEE", dataL);
   try {
     const response = await fetch(
       "https://allkits-server.onrender.com/convertSceneToText",
@@ -60,7 +59,6 @@ const getFabricData = async (setAllCanvasData, sceneRef) => {
   let fabricCanvases = [];
   group.children.forEach((mesh) => {
     if (mesh.userData && mesh.userData.canvas) {
-      console.log(mesh.userData.canvas);
       fabricCanvases.push(mesh.userData.canvas);
     }
   });
@@ -74,6 +72,7 @@ const getFabricData = async (setAllCanvasData, sceneRef) => {
       texts: [],
       images: [],
       paths: [],
+      pathsWithCircles: [],
       part: canvas.part,
     };
 
@@ -95,7 +94,6 @@ const getFabricData = async (setAllCanvasData, sceneRef) => {
         obj._element &&
         obj._element.src.startsWith("data:image")
       ) {
-        console.log("tem imagem");
         const baseImage = obj._element.src;
 
         const imageData = obj._element.src.split(";base64,").pop();
@@ -126,21 +124,39 @@ const getFabricData = async (setAllCanvasData, sceneRef) => {
           console.error("Error uploading image:", error);
         }
       } else if (obj instanceof fabric.Path) {
+        console.log(obj);
         canvasData.paths.push({
           path: obj.path,
-          left: obj.left,
-          top: obj.top,
-          fill: obj.fill,
           stroke: obj.stroke,
           strokeWidth: obj.strokeWidth,
           strokeLineCap: obj.strokeLineCap,
           strokeLineJoin: obj.strokeLineJoin,
-          strokeDashArray: obj.strokeDashArray,
+          left: obj.left,
+          top: obj.top,
+          width: obj.width,
+          height: obj.height,
+          pathOffset: obj.pathOffset,
+        });
+      } else {
+        let objects = [];
+        obj._objects.forEach((circle) => {
+          let newCircle = {
+            width: circle.width,
+            height: circle.height,
+            left: circle.left,
+            top: circle.top,
+            fill: circle.fill,
+          };
+          objects.push(newCircle);
+        });
+        canvasData.pathsWithCircles.push({
+          objects: objects,
         });
       }
     }
 
     allCanvasData.push(canvasData);
+    console.log(canvasData.pathsWithCircles);
   }
 
   setAllCanvasData(allCanvasData);
