@@ -1,8 +1,10 @@
+import { checkColorAtCoordinates } from "./is-path-at-exact-coords";
+
 export function selectImage(
   intersectionResult,
   initialUVCursor,
   currentUVCursor,
-  canvasRef,
+  fabricCanvas,
   objectRotation,
   initialUVRotationCursor,
   updateTexture,
@@ -14,10 +16,10 @@ export function selectImage(
   let selectedHandle = null;
   let isImageSelected = false;
 
-  let previousSelectedObject = canvasRef.current.getActiveObject();
+  let previousSelectedObject = fabricCanvas.current.getActiveObject();
 
-  initialUVCursor.x = intersectionResult.uv.x * canvasRef.current.width;
-  initialUVCursor.y = intersectionResult.uv.y * canvasRef.current.height;
+  initialUVCursor.x = intersectionResult.uv.x * fabricCanvas.current.width;
+  initialUVCursor.y = intersectionResult.uv.y * fabricCanvas.current.height;
 
   currentUVCursor.x = initialUVCursor.x;
   currentUVCursor.y = initialUVCursor.y;
@@ -27,15 +29,25 @@ export function selectImage(
 
   const point = new fabric.Point(initialUVCursor.x, initialUVCursor.y);
 
-  canvasRef.current.forEachObject((obj) => {
+  fabricCanvas.current.forEachObject((obj) => {
     if (obj.containsPoint(point)) {
-      canvasRef.current.setActiveObject(obj);
-      isImageSelected = true;
-      objectRotation.current = obj.angle;
+      if (obj instanceof fabric.Path) {
+        console.log("path");
+        if (checkColorAtCoordinates(fabricCanvas, point.x, point.y, obj)) {
+          console.log("caitfo");
+          fabricCanvas.current.setActiveObject(obj);
+          isImageSelected = true;
+          objectRotation.current = obj.angle;
+        }
+      } else {
+        fabricCanvas.current.setActiveObject(obj);
+        isImageSelected = true;
+        objectRotation.current = obj.angle;
+      }
     }
 
     let tolerance;
-    if (obj instanceof fabric.Image) {
+    if (obj instanceof fabric.Image || obj instanceof fabric.Path) {
       const minSide = Math.min(obj.width * obj.scaleX, obj.height * obj.scaleY);
       tolerance = minSide / 10;
     } else {
@@ -60,24 +72,22 @@ export function selectImage(
         handleCoords.y > infLimY
       ) {
         selectedHandle = i;
-        canvasRef.current.setActiveObject(obj);
+        fabricCanvas.current.setActiveObject(obj);
         isImageSelected = true;
         objectRotation.current = obj.angle;
       }
     }
   });
-  const selectedObject = canvasRef.current.getActiveObject();
+  const selectedObject = fabricCanvas.current.getActiveObject();
 
   if (!isImageSelected) {
-    if (selectedObject) {
-    }
-    canvasRef.current.discardActiveObject();
+    fabricCanvas.current.discardActiveObject();
   } else {
     originalLeft.current = selectedObject.left;
     originalTop.current = selectedObject.top;
     originalOCoords.current = selectedObject.oCoords;
     if (selectedObject instanceof fabric.Image) {
-      const minSide = Math.min(
+      /*const minSide = Math.min(
         selectedObject.width * selectedObject.scaleX,
         selectedObject.height * selectedObject.scaleY
       );
@@ -100,7 +110,7 @@ export function selectImage(
         actionHandler: originalControl.actionHandler,
         withConnection: true,
         actionName: "rotate",
-      });
+      });*/
     } else if (
       selectedObject instanceof fabric.Textbox &&
       selectedObject != previousSelectedObject
@@ -118,8 +128,8 @@ export function selectImage(
     }
   }
 
-  canvasRef.current.bringToFront(selectedObject);
-  canvasRef.current.renderAll();
+  fabricCanvas.current.bringToFront(selectedObject);
+  fabricCanvas.current.renderAll();
   updateTexture();
 
   return {

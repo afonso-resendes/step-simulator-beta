@@ -28,12 +28,14 @@ export function scaleRotateMove(
   lastDUVRecorded,
   lastDCursorRecorded,
   lastDeltaUVRecorded,
-  orbit
+  orbit,
+  offsetX
 ) {
   orbit.enabled = false;
   const canvasW = fabricCanvas.current.width;
   const canvasH = fabricCanvas.current.height;
-  currentMouse.x = (x / window.innerWidth) * 2 - 1;
+
+  currentMouse.x = ((x - offsetX) / window.innerWidth) * 2 - 1;
   currentMouse.y = -(y / window.innerHeight) * 2 + 1;
 
   const isHandleSelected = selectImageResult.selectedHandle;
@@ -62,6 +64,17 @@ export function scaleRotateMove(
       editingComponent.current,
       currentMouse
     )[0];
+    console.log(
+      "puuuu",
+      getIntersection(
+        raycaster,
+        camera,
+        editingComponent.current,
+        currentMouse
+      ),
+      "kjkjkjkj",
+      offsetX
+    );
   }
 
   const activeObject = fabricCanvas.current.getActiveObject();
@@ -481,7 +494,10 @@ export function scaleRotateMove(
 
       if (selectedHandle != "mtr") {
         console.log("ksjadb");
-        if (activeObject instanceof fabric.Image) {
+        if (
+          activeObject instanceof fabric.Image ||
+          activeObject instanceof fabric.Path
+        ) {
           if (
             distanceFrom(newOCoords.tl, newOCoords.tr) < maxScaleAllowed &&
             distanceFrom(newOCoords.tl, newOCoords.tr) > minScaleAllowed &&
@@ -587,8 +603,8 @@ export function scaleRotateMove(
         ) {
           activeObject.set({
             left: uCoord,
-            originX: "center",
-            originY: "center",
+            /*originX: "center",
+            originY: "center",*/
           });
         }
         if (
@@ -597,14 +613,17 @@ export function scaleRotateMove(
         ) {
           activeObject.set({
             top: vCoord,
-            originX: "center",
-            originY: "center",
+            /*originX: "center",
+            originY: "center",*/
           });
         }
       }
     }
 
-    if (activeObject instanceof fabric.Image) {
+    /*if (
+      activeObject instanceof fabric.Image ||
+      activeObject instanceof fabric.Path
+    ) {
       const minSide = Math.min(
         activeObject.width * activeObject.scaleX,
         activeObject.height * activeObject.scaleY
@@ -627,7 +646,7 @@ export function scaleRotateMove(
         withConnection: true,
         actionName: "rotate",
       });
-    }
+    }*/
 
     previousUVCursor.x = currentUVCursor.x;
     previousUVCursor.y = currentUVCursor.y;

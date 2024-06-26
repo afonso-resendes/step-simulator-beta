@@ -5,9 +5,7 @@ import * as THREE from "three";
 import { isPointInUV } from "./isPointInUV";
 
 export function calculateArea(sceneRef, setAnimatedPrice) {
-  console.log("start");
   let totalPrice = 13.25;
-  console.log(totalPrice);
   let realPartArea;
 
   let canvasesAndPercentages = [];
@@ -50,12 +48,11 @@ export function calculateArea(sceneRef, setAnimatedPrice) {
 
     finalPrintCanvas.clear();
 
-    canvas.renderAll();
+    //canvas.renderAll();
 
     copyCanvasWOBG(canvas, finalPrintCanvas);
 
     let finalPrintPngData = finalPrintCanvas.toDataURL({ format: "png" });
-    console.log(finalPrintPngData);
     /*
     let finalPrintImage = new Image();
     finalPrintImage.src = finalPrintPngData;*/
@@ -99,10 +96,7 @@ export function calculateArea(sceneRef, setAnimatedPrice) {
     const aditionalCost = tenCm2Blocks * 1.6;
 
     totalPrice += aditionalCost;
-    console.log(totalPrice);
   });
-
-  console.log("total", totalPrice);
 
   animatePrice(0, totalPrice, 1000, setAnimatedPrice);
 }

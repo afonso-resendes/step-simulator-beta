@@ -38,10 +38,19 @@ export const loadGLBModel = (
     ktx2Loader.loadAsync("/glbs/general-textures/normal.ktx2"),
     ktx2Loader.loadAsync("/glbs/general-textures/roughness.ktx2"),
     ktx2Loader.loadAsync("/glbs/general-textures/transmission.ktx2"),
+    ktx2Loader.loadAsync("/glbs/general-textures/tshirt-normal.ktx2"),
+    ktx2Loader.loadAsync("/glbs/general-textures/tshirt-roughness.ktx2"),
+    ktx2Loader.loadAsync("/glbs/general-textures/tshirt-transmission.ktx2"),
   ])
     .then((textures) => {
-      const [normal, roughness, transmission] = textures;
-      console.log("wowowo");
+      const [
+        normalHoodie,
+        roughnessHoodie,
+        transmissionHoodie,
+        normalTshirt,
+        roughnessTshirt,
+        transmissionTshirt,
+      ] = textures;
 
       const objectNames = []; // Array para armazenar os nomes dos objetos
 
@@ -53,13 +62,23 @@ export const loadGLBModel = (
           gltf.scene.traverse(function (child) {
             if (child.isMesh) {
               if (child.name.includes("TEXT")) {
-                normal.channel = 2;
-                roughness.channel = 2;
-                transmission.channel = 2;
-                child.material.normalMap = normal;
-                child.material.roughnessMap = roughness;
-                child.material.transmissionMap = transmission;
-                child.material.sheen = 0;
+                if (path.includes("tshirt")) {
+                  normalTshirt.channel = 2;
+                  roughnessTshirt.channel = 2;
+                  transmissionTshirt.channel = 2;
+                  child.material.normalMap = normalTshirt;
+                  child.material.roughnessMap = roughnessTshirt;
+                  child.material.transmissionMap = transmissionTshirt;
+                  child.material.sheen = 0;
+                } else {
+                  normalHoodie.channel = 2;
+                  roughnessHoodie.channel = 2;
+                  transmissionHoodie.channel = 2;
+                  child.material.normalMap = normalHoodie;
+                  child.material.roughnessMap = roughnessHoodie;
+                  child.material.transmissionMap = transmissionHoodie;
+                  child.material.sheen = 0;
+                }
               }
 
               child.material.opacity = 0;
@@ -67,7 +86,7 @@ export const loadGLBModel = (
               child.material.needsUpdate = true;
               child.material.transmission = 0;
               child.castShadow = true;
-              child.receiveShadow = false;
+              child.receiveShadow = true;
 
               objectNames.push(child.name); // Adiciona o nome ao array
             }

@@ -32,11 +32,10 @@ export const uploadImage = (
         originY: "center",
         scaleX: scale * 0.5,
         scaleY: scale * 0.5,
-        cornerSize:
-          fabricImage.width < fabricImage.height
+        cornerSize: canvasSize / 30,
+        /*fabricImage.width < fabricImage.height
             ? (fabricImage.width * scale) / 10
-            : (fabricImage.height * scale) / 10,
-        cornerStyle: "circle",
+            : (fabricImage.height * scale) / 10*/ cornerStyle: "circle",
         transparentCorners: false,
         cornerColor:
           fabricCanvas.current.backgroundColor == "#000000"
@@ -46,7 +45,7 @@ export const uploadImage = (
         //angle: 40,
       });
 
-      const minSide = Math.min(
+      /*const minSide = Math.min(
         fabricImage.width * fabricImage.scaleX,
         fabricImage.height * fabricImage.scaleY
       );
@@ -69,7 +68,7 @@ export const uploadImage = (
         actionHandler: originalControl.actionHandler,
         withConnection: true,
         actionName: "rotate",
-      });
+      });*/
       fabricCanvas.current.add(fabricImage);
       fabricCanvas.current.setActiveObject(fabricImage);
       fabricCanvas.current.renderAll();

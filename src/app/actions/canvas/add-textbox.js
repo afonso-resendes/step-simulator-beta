@@ -11,7 +11,8 @@ export function addTextbox(
   fontFamily,
   fillColor,
   textAlign,
-  setActiveObject
+  setActiveObject,
+  canvasSize
 ) {
   let position = calculateAverageUV(editingComponent.current);
   let scaleF =
@@ -50,7 +51,7 @@ export function addTextbox(
     }
 
     textbox.set({
-      cornerSize: fontSize / 2,
+      cornerSize: canvasSize / 30, //fontSize / 2,
     });
     for (const font of fontList) {
       textbox.set("fontFamily", font);

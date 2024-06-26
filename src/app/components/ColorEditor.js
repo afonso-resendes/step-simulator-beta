@@ -24,12 +24,9 @@ const ColorEditor = forwardRef(
         "opacity 0.2s cubic-bezier(0.1, 0.1, 0.0, 1.0), scale 0.6s 0.2s cubic-bezier(0.4, 0.7, 0.0, 1.0)";
       editingComponent.current.name.includes("COR")
         ? (editZoneRef.current.style.height = "130px")
-        : (editZoneRef.current.style.height = "292px");
-      editZoneRef.current.style.transition =
-        "height 0.3s cubic-bezier(0.1, 0.7, 0.0, 1.0)";
-      editZoneRefChild.current.style.opacity = 1;
-      editZoneRefChild.current.style.transition =
-        "all 0.1s cubic-bezier(0.1, 0.7, -0.4, 1.0)";
+        : (editZoneRef.current.style.height = "369px");
+      editZoneRefChild.current.style.opacity = 0;
+
       setTimeout(() => {
         closeEditor();
       }, 200);

@@ -31,6 +31,8 @@ const ImageEditor = forwardRef(
       editZoneRefChild,
       forceClose,
       setActiveObject,
+      inputImage,
+      setInputImage,
     },
     ref
   ) => {
@@ -64,10 +66,10 @@ const ImageEditor = forwardRef(
       setShowCanvas(true);
       loadImageOnCanvas();
       setHeightWindow(window.innerWidth < 715 ? window.innerHeight * 0.8 : 450);
-      editZoneRef.current.style.height = `500px`;
-      editZoneRef.current.style.transition =
-        "all 0.3s cubic-bezier(0.1, 0.7, 0.0, 1.0)";
-      editZoneImgRef.current.style.height = `500px`;
+      editZoneRef.current.style.height = `450px`;
+      /*editZoneRef.current.style.transition =
+        "all 0.3s cubic-bezier(0.1, 0.7, 0.0, 1.0)";*/
+      editZoneImgRef.current.style.height = `450px`;
       editZoneImgRef.current.style.transition = "all 0.3s ease-in-out";
     };
 
@@ -116,8 +118,8 @@ const ImageEditor = forwardRef(
       if (!colorToRemove || !canvasRef.current) return;
 
       editZoneRef.current.style.height = "500px";
-      editZoneRef.current.style.transition =
-        "all 0.3s cubic-bezier(0.1, 0.7, 0.0, 1.0)";
+      /*editZoneRef.current.style.transition =
+        "all 0.3s cubic-bezier(0.1, 0.7, 0.0, 1.0)";*/
       const canvas = canvasRef.current;
       const ctx = canvas.getContext("2d");
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -257,9 +259,8 @@ const ImageEditor = forwardRef(
           "opacity 0.2s cubic-bezier(0.1, 0.1, 0.0, 1.0), scale 0.6s 0.2s cubic-bezier(0.4, 0.7, 0.0, 1.0)";
       }
 
-      editZoneRefChild.current.style.opacity = "1";
-      editZoneRefChild.current.style.transition =
-        "all 0.1s cubic-bezier(0.1, 0.7, -0.4, 1.0)";
+      editZoneRefChild.current.style.opacity = "0";
+
       setTimeout(() => {
         closeImageEditor();
       }, 200);
@@ -293,6 +294,12 @@ const ImageEditor = forwardRef(
       }, 10);
       window.addEventListener("resize", adjustHeight);
 
+      console.log(
+        fabricCanvas.current._objects.filter(
+          (obj) => obj instanceof fabric.Image
+        ).length
+      );
+
       return () => {
         window.removeEventListener("resize", adjustHeight);
       };
@@ -308,15 +315,36 @@ const ImageEditor = forwardRef(
         }
 
         editZoneRefChild.current.style.opacity = 1;
-        editZoneRefChild.current.style.transition =
-          "all 0.1s cubic-bezier(0.1, 0.7, -0.4, 1.0)";
         console.log(forceClose);
       }
     }, [forceClose]);
 
     return (
       <div
-        style={{ height: heightWindow, opacity: 0 }}
+        style={{
+          height: !activeObject
+            ? window.innerHeight > 715
+              ? 65 +
+                103.7 *
+                  Math.floor(
+                    (fabricCanvas.current._objects.filter(
+                      (obj) => obj instanceof fabric.Image
+                    ).length +
+                      2) /
+                      3
+                  )
+              : 150
+            : window.innerHeight > 715
+            ? 292
+            : 150,
+          opacity: 0,
+          maxHeight: "70vh",
+          maskImage:
+            !activeObject && window.innerHeight > 715
+              ? "linear-gradient(to bottom, white 85%, transparent 98%)"
+              : "linear-gradient(to right, white 85%, transparent 98%) linear-gradient(to left, white 85%, transparent 98%)",
+          maskSize: !activeObject && "100% 100%",
+        }}
         ref={editZoneImgRef}
         className={styles.editZoneImg}
       >
@@ -326,8 +354,6 @@ const ImageEditor = forwardRef(
             onClick={() => {
               picker
                 ? (setPicker(false),
-                  (editZoneRef.current.style.height =
-                    window.innerWidth < 715 ? "auto" : "292px"),
                   editZoneImgRef
                     ? (editZoneImgRef.current.style.height =
                         window.innerWidth < 715 ? "auto" : "292px")
@@ -339,10 +365,8 @@ const ImageEditor = forwardRef(
                   updateTexture())
                 : handleCloseImageEditor();
               setShowCanvas(false);
-              editZoneRef.current.style.height =
-                window.innerWidth < 715 ? "auto" : "292px";
-              editZoneRef.current.style.transition =
-                "all 0.3s cubic-bezier(0.1, 0.7, 0.0, 1.0)";
+              /*editZoneRef.current.style.transition =
+                "all 0.3s cubic-bezier(0.1, 0.7, 0.0, 1.0)";*/
             }}
           >
             <p
@@ -374,6 +398,7 @@ const ImageEditor = forwardRef(
             <input
               type="file"
               onChange={uploadImage}
+              value={inputImage}
               style={{ display: "none" }}
             />
           </label>
@@ -483,7 +508,19 @@ const ImageEditor = forwardRef(
               )}
             </>
           ) : (
-            <div>
+            <div
+              style={{
+                height:
+                  103.7 *
+                  Math.floor(
+                    (fabricCanvas.current._objects.filter(
+                      (obj) => obj instanceof fabric.Image
+                    ).length +
+                      2) /
+                      3
+                  ),
+              }}
+            >
               <input
                 type="file"
                 onChange={uploadImage}
@@ -497,7 +534,22 @@ const ImageEditor = forwardRef(
                 }}
               />
               <div
-                style={{ height: window.innerWidth > 715 ? 240 : 90 }}
+                style={{
+                  height:
+                    window.innerWidth > 715
+                      ? !activeObject
+                        ? 105.7 *
+                          Math.floor(
+                            (fabricCanvas.current._objects.filter(
+                              (obj) => obj instanceof fabric.Image
+                            ).length +
+                              2) /
+                              3
+                          )
+                        : 240
+                      : 100,
+                  width: window.innerWidth > 715 ? "auto" : "100vw",
+                }}
                 className={styles.imageList}
               >
                 {fabricCanvas.current._objects.map((obj, index) => {

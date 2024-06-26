@@ -38,6 +38,7 @@ const Visualize = ({ params }) => {
     3: "/glbs/meshes/2.glb",
     4: "/glbs/meshes/3.glb",
     5: "/glbs/meshes/4.glb",
+    6: "/glbs/meshes/tshirtRightPlace.glb",
   };
 
   const url = modelUrls[model] || null;
@@ -54,8 +55,16 @@ const Visualize = ({ params }) => {
         return;
       }
       sceneDataArray.forEach((sceneData, index) => {
-        const { width, height, backgroundColor, texts, images, part } =
-          sceneData;
+        const {
+          width,
+          height,
+          backgroundColor,
+          texts,
+          images,
+          paths,
+          pathsWithCircles,
+          part,
+        } = sceneData;
 
         const canvas = new fabric.Canvas(`${part}`, {
           width,
@@ -133,7 +142,6 @@ const Visualize = ({ params }) => {
                     });
 
                     canvas.add(img);
-                    console.log(canvas);
                     //canvas.renderAll();
                   },
                   { crossOrigin: "anonymous" } // Add crossOrigin to handle CORS if needed
@@ -142,7 +150,64 @@ const Visualize = ({ params }) => {
             }
           );
         }
-        console.log(canvas);
+
+        if (paths && paths.length >= 1) {
+          paths.forEach(
+            async ({
+              path,
+              stroke,
+              strokeWidth,
+              strokeLineCap,
+              strokeLineJoin,
+              left,
+              top,
+              width,
+              height,
+              pathOffset,
+              objects,
+            }) => {
+              let newPath = new fabric.Path(path);
+              newPath.set({
+                path,
+                stroke,
+                strokeWidth,
+                strokeLineCap,
+                strokeLineJoin,
+                left,
+                top,
+                width,
+                height,
+                pathOffset,
+                fill: "transparent",
+                originX: "center",
+                originY: "center",
+              });
+
+              console.log(newPath);
+
+              canvas.add(newPath);
+            }
+          );
+        }
+
+        if (pathsWithCircles && pathsWithCircles.length >= 1) {
+          console.log(pathsWithCircles);
+          pathsWithCircles.forEach(async ({ objects }) => {
+            objects.forEach((circle) => {
+              let newCircle = new fabric.Circle();
+
+              newCircle.set({
+                width: circle.width,
+                height: circle.height,
+                left: circle.left,
+                top: circle.top,
+                fill: circle.fill,
+              });
+
+              canvas.add(newCircle);
+            });
+          });
+        }
         canvas.renderAll();
 
         canvasRefs.current[`${part}`] = canvas;
@@ -155,6 +220,7 @@ const Visualize = ({ params }) => {
               if (Object.keys(canvasRefs.current).includes(meshh.name)) {
                 mesh.current = meshh;
                 const canvas = canvasRefs.current[meshh.name];
+                console.log(canvas);
 
                 canvas._objects.sort((a, b) => a.index - b.index);
                 canvas.renderAll();
@@ -165,6 +231,7 @@ const Visualize = ({ params }) => {
                   );
 
                   newTexture.flipY = false;
+                  newTexture.colorSpace = THREE.SRGBColorSpace;
                   mesh.current.material.map = newTexture;
                   mesh.current.material.map.needsUpdate = true;
                 } catch (error) {
@@ -176,7 +243,7 @@ const Visualize = ({ params }) => {
         });
 
         animate();
-      }, 1000);
+      }, 8000);
     };
 
     const sceneLayout = createSceneLayout();
