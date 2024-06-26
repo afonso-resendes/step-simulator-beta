@@ -161,6 +161,8 @@ const ThreeDViewer = () => {
 
   let previousDrawnPath = useRef([]);
 
+  let freeDrawingBrush = useRef(null);
+
   // Style based on preview state
   const buttonStyle = {
     right: preview
@@ -232,6 +234,7 @@ const ThreeDViewer = () => {
   // DRAWING
   const [isDrawingMode, setIsDrawingMode] = useState(false);
   const isDrawingRef = useRef(false);
+  const [cursorType, setCursorType] = useState("cursor");
 
   const handleBrushSizeChange = (size) => {
     if (fabricCanvas.current) {
@@ -254,14 +257,17 @@ const ThreeDViewer = () => {
     switch (type) {
       case "pencil":
         newBrush = new CenteredPencilBrush(fabricCanvas.current);
+        setCursorType("pencil");
         break;
       case "spray":
         newBrush = new CenteredSprayBrush(fabricCanvas.current);
+        setCursorType("spray");
         break;
 
       case "cursor":
         // Assuming 'cursor' means to toggle off drawing mode
         fabricCanvas.current.isDrawingMode = false;
+        setCursorType("cursor");
         return;
       default:
         fabricCanvas.current.isDrawingMode = false;
@@ -272,6 +278,8 @@ const ThreeDViewer = () => {
     newBrush.color = fabricCanvas.current.freeDrawingBrush.color;
     newBrush.width = fabricCanvas.current.freeDrawingBrush.width;
     fabricCanvas.current.freeDrawingBrush = newBrush;
+    freeDrawingBrush.current = newBrush;
+    console.log(newBrush instanceof CenteredPencilBrush);
   };
 
   // ANIMACAO PARA APARECER TLM EDITZONE
@@ -665,6 +673,17 @@ const ThreeDViewer = () => {
       updateTexture();
     });
 
+    function isInputActive() {
+      const activeElement = document.activeElement;
+      return (
+        activeElement &&
+        (activeElement.tagName === "INPUT" ||
+          activeElement.tagName === "TEXTAREA" ||
+          activeElement.tagName === "SELECT" ||
+          activeElement.isContentEditable)
+      );
+    }
+
     document.addEventListener("keydown", function (event) {
       // Check if 'Ctrl' key is pressed and 'Z' key is pressed
       if ((event.ctrlKey || event.metaKey) && event.key === "z") {
@@ -672,6 +691,20 @@ const ThreeDViewer = () => {
         // Your code to handle 'Ctrl+Z' here
 
         if (isDrawingRef.current) undo();
+      }
+
+      if (event.key === "Backspace" || event.key === "Delete") {
+        if (!isInputActive()) {
+          console.log("puu");
+          const activeObjects = fabricCanvas.current.getActiveObjects();
+          activeObjects.forEach((object) => {
+            fabricCanvas.current.remove(object);
+            setActiveObject(null);
+            closeAllTabs();
+            fabricCanvas.current.renderAll();
+            updateTexture();
+          });
+        }
       }
     });
 
@@ -1179,32 +1212,63 @@ const ThreeDViewer = () => {
                   onChange={(e) => handleBrushSizeChange(e.target.value)}
                 />
 
-                <button onClick={undo}>undo</button>
+                <button onClick={undo}>Undo</button>
               </div>
               <div className={styles.canvasBrushesZone}>
                 <div className={styles.firstBtns}>
                   <button
                     className={styles.drawingButton}
                     onClick={() => setBrushType("cursor")}
+                    style={{
+                      backgroundColor:
+                        cursorType == "cursor" ? "#000" : "#f2f2f2",
+                    }}
                   >
-                    <NextImage alt="Step" width={20} height={20} src={mouse} />
+                    <NextImage
+                      alt="Step"
+                      width={20}
+                      height={20}
+                      src={mouse}
+                      style={{
+                        filter: cursorType == "cursor" ? "invert()" : "none",
+                      }}
+                    />
                   </button>
                   <button
                     className={styles.drawingButton}
                     onClick={() => setBrushType("pencil")}
+                    style={{
+                      backgroundColor:
+                        cursorType == "pencil" ? "#000" : "#f2f2f2",
+                    }}
                   >
                     <NextImage
                       alt="Step"
                       width={25}
                       height={25}
                       src={desenhaIcon}
+                      style={{
+                        filter: cursorType == "pencil" ? "invert()" : "none",
+                      }}
                     />
                   </button>
                   <button
                     className={styles.drawingButton}
                     onClick={() => setBrushType("spray")}
+                    style={{
+                      backgroundColor:
+                        cursorType == "spray" ? "#000" : "#f2f2f2",
+                    }}
                   >
-                    <NextImage alt="Step" width={20} height={20} src={spray} />
+                    <NextImage
+                      alt="Step"
+                      width={20}
+                      height={20}
+                      src={spray}
+                      style={{
+                        filter: cursorType == "spray" ? "invert()" : "none",
+                      }}
+                    />
                   </button>
 
                   {/* <button
