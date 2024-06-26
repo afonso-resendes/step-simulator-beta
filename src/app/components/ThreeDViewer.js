@@ -211,10 +211,12 @@ const ThreeDViewer = () => {
         editZoneRef.current.children[1].children[0] &&
         editZoneRef.current.children[1].children[0].children &&
         editZoneRef.current.children[1].children[0].children.length
-      ? `${
-          100 +
-          70 * (editZoneRef.current.children[1].children[0].children.length - 1)
-        }px`
+      ? editingComponentName.includes("COR")
+        ? 150
+        : `${
+            //80 * editZoneRef.current.children[1].children[0].children.length + 40
+            editZoneRef.current.children[1].children[0].children.length * 77
+          }px`
       : 0,
     maxHeight: "70vh",
   };
@@ -1090,7 +1092,6 @@ const ThreeDViewer = () => {
                           closeEditor();
                         }}
                         className={styles.divAreaEspecifica}
-                        style={{ borderWidth: 0 }}
                       >
                         <div className={styles.divIcon}>
                           <NextImage

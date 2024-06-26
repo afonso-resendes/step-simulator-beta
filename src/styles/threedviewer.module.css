@@ -107,6 +107,12 @@
     justify-content: flex-start;
     gap: 15px;
     transition: all 0.2s ease-in-out;
+    height: 80px;
+    /*border: 1px solid #000;*/
+  }
+
+  .divAreaEspecifica:last-child {
+    border: none;
   }
 
   .divAreaEspecifica:hover {
