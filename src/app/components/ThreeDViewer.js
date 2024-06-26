@@ -535,9 +535,9 @@ const ThreeDViewer = () => {
           if (selectedObject instanceof fabric.Image) {
             imageEditorTab();
           } else if (selectedObject instanceof fabric.Textbox) {
-            setTimeout(() => {
-              textEditorTab();
-            }, 800);
+            //setTimeout(() => {
+            textEditorTab();
+            //}, 800);
           }
         } else {
           setTimeout(() => {

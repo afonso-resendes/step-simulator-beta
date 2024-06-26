@@ -179,9 +179,9 @@ const TextEditor = forwardRef(
           setFillColor(activeObject.fill || "#000000");
           setFontFamily(activeObject.fontFamily);
           setTextAlign(activeObject.textAlign);
-          setTimeout(() => {
-            textZoneRef.current.style.opacity = 1;
-          }, 100);
+          //setTimeout(() => {
+          textZoneRef.current.style.opacity = 1;
+          //}, 100);
         } else {
           setText("");
           setFontSize(35);
@@ -201,11 +201,11 @@ const TextEditor = forwardRef(
     }, [editingComponent.current]);
 
     useEffect(() => {
-      setTimeout(() => {
-        editZoneRefText.current.style.opacity = 1;
-        editZoneRefText.current.style.transition =
-          "opacity 0.3s cubic-bezier(0.1, 0.1, 0.0, 1.0), scale 1s cubic-bezier(0.1, 0.7, -0.4, 1.0)";
-      }, 10);
+      /*setTimeout(() => {
+        //editZoneRefText.current.style.opacity = 1;
+        //editZoneRefText.current.style.transition =
+        //  "opacity 0.3s cubic-bezier(0.1, 0.1, 0.0, 1.0), scale 1s cubic-bezier(0.1, 0.7, -0.4, 1.0)";
+      }, 10);*/
 
       let add = true;
       let textboxNumber = 0;
@@ -234,7 +234,7 @@ const TextEditor = forwardRef(
         editZoneRefText.current.style.transition =
           "opacity 0.2s cubic-bezier(0.1, 0.1, 0.0, 1.0), scale 0.6s 0.2s cubic-bezier(0.4, 0.7, 0.0, 1.0)";
         editZoneRefChild.current.style.opacity = 1;
-        textZoneRef.current.style.opacity = 0;
+        //textZoneRef.current.style.opacity = 0;
       }
     }, [forceClose]);
 
