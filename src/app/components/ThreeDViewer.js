@@ -1195,14 +1195,24 @@ const ThreeDViewer = () => {
           <>
             <div className={styles.paintingBoard}>
               <div className={styles.headerOptions}>
-                <h1
-                  onClick={() => {
-                    setIsDrawingMode(false);
-                  }}
-                  className={styles.xIcon}
-                >
-                  &#10005;
-                </h1>
+                <header className={styles.xIconUndo}>
+                  <h1
+                    onClick={() => {
+                      setIsDrawingMode(false);
+                    }}
+                    className={styles.xIcon}
+                  >
+                    &#10005;
+                  </h1>
+                  <button className={styles.drawingButtonUndo} onClick={undo}>
+                    <NextImage
+                      width={20}
+                      height={20}
+                      src={arrowBack}
+                      alt="Step"
+                    />
+                  </button>
+                </header>
                 <input
                   className={styles.scaleInput}
                   type="range"
@@ -1211,9 +1221,8 @@ const ThreeDViewer = () => {
                   defaultValue="10"
                   onChange={(e) => handleBrushSizeChange(e.target.value)}
                 />
-
-                <button onClick={undo}>Undo</button>
               </div>
+
               <div className={styles.canvasBrushesZone}>
                 <div className={styles.firstBtns}>
                   <button
